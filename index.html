@@ -164,6 +164,20 @@ textarea.form-control{resize:vertical;min-height:80px;}
 .modal-close-top{position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:white;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .18s;}
 .modal-close-top:hover{background:rgba(255,255,255,.28);}
 .profile-modal-body{display:grid;grid-template-columns:1fr 1fr;gap:1rem;padding:1.4rem 1.8rem;}
+.profile-tabs{display:flex;gap:0;border-bottom:2px solid var(--gray-200);padding:0 1.8rem;background:var(--white);}
+.profile-tab-btn{padding:.7rem 1.2rem;font-family:'Montserrat',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;border:none;background:transparent;color:var(--gray-400);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .18s;}
+.profile-tab-btn:hover{color:var(--blue);}
+.profile-tab-btn.active{color:var(--blue-dark);border-bottom-color:var(--blue-dark);}
+.profile-tab-panel{display:none;}.profile-tab-panel.active{display:block;}
+.art-hist-empty{text-align:center;padding:2.5rem;color:var(--gray-400);font-family:'Montserrat',sans-serif;font-size:.82rem;}
+.art-hist-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:1rem 1.2rem;margin-bottom:.8rem;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;}
+.art-hist-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;}
+.art-hist-card.sin-alta::before{background:var(--red);}
+.art-hist-card.con-alta::before{background:var(--green);}
+.art-hist-num{font-family:'Montserrat',sans-serif;font-size:.65rem;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem;}
+.art-hist-tipo{font-family:'Montserrat',sans-serif;font-size:.88rem;font-weight:700;color:var(--gray-900);margin-bottom:.5rem;}
+.art-hist-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem .8rem;}
+.art-hist-item{font-size:.72rem;color:var(--gray-500);}<br>.art-hist-item strong{display:block;color:var(--gray-900);font-weight:700;font-size:.78rem;}
 .info-sec{border:1px solid var(--gray-200);border-radius:var(--radius-sm);overflow:hidden;}
 .info-sec-head{background:var(--gray-50);padding:.5rem .9rem;font-size:.6rem;font-family:'Montserrat',sans-serif;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue-dark);border-bottom:1px solid var(--gray-200);}
 .info-row{display:flex;justify-content:space-between;padding:.5rem .9rem;border-bottom:1px solid var(--gray-100);gap:1rem;align-items:baseline;}
@@ -334,9 +348,24 @@ footer strong{color:rgba(255,255,255,.75);}
       <div class="modal-info-head">
         <h2 id="ve-nombre"></h2>
         <div class="modal-leg" id="ve-leg"></div>
+        <div id="ve-art-badge" style="margin-top:.4rem;"></div>
       </div>
     </div>
-    <div class="profile-modal-body" id="ve-body"></div>
+    <!-- PESTAÑAS -->
+    <div class="profile-tabs">
+      <button class="profile-tab-btn active" onclick="switchProfileTab('datos',this)">👤 Datos personales</button>
+      <button class="profile-tab-btn" onclick="switchProfileTab('art',this)">🩺 Historial ART <span id="ve-art-count" style="background:var(--blue-light);color:var(--blue);font-size:.6rem;padding:1px 7px;border-radius:10px;margin-left:4px;">0</span></button>
+    </div>
+    <!-- PANEL DATOS -->
+    <div class="profile-tab-panel active" id="ve-panel-datos">
+      <div class="profile-modal-body" id="ve-body"></div>
+    </div>
+    <!-- PANEL ART -->
+    <div class="profile-tab-panel" id="ve-panel-art">
+      <div style="padding:1.4rem 1.8rem;" id="ve-art-body">
+        <div class="art-hist-empty">Cargando historial...</div>
+      </div>
+    </div>
     <div class="modal-foot">
       <button class="btn btn-secondary" onclick="closeModal('modalVerEmpleado')">Cerrar</button>
       <button class="btn btn-primary" onclick="editarDesdeVer()">✏️ Editar</button>
@@ -993,8 +1022,23 @@ function verEmpleado(dni) {
   const e = nominaData.find(x=>String(x['DNI'])===String(dni));
   if (!e) return;
   verDNI = dni;
+
+  // Reset pestañas — siempre abre en Datos
+  switchProfileTab('datos', document.querySelector('.profile-tab-btn'));
+
   document.getElementById('ve-nombre').textContent = (e['Apellidos']||'') + ', ' + (e['Nombres']||'');
   document.getElementById('ve-leg').textContent    = 'Legajo: ' + (e['Leg.']||'—') + ' · DNI: ' + (e['DNI']||'—');
+
+  // Badge estado laboral
+  const estado = String(e['Estado']||'').toLowerCase();
+  const badgeEl = document.getElementById('ve-art-badge');
+  badgeEl.innerHTML = estado === 'activo'
+    ? '<span class="pill pill-green">Activo</span>'
+    : estado === 'inactivo'
+    ? '<span class="pill pill-red">Inactivo</span>'
+    : '';
+
+  // Panel datos
   document.getElementById('ve-body').innerHTML = `
     <div class="info-sec"><div class="info-sec-head">Datos Personales</div>
       ${ir('DNI',e['DNI'])} ${ir('CUIL',e['CUIL (ID Laboral)'])} ${ir('Sexo',e['Sexo'])} ${ir('Nacionalidad',e['Nacionalidad'])} ${ir('F. Nacimiento',e['F. Nacimiento'])} ${ir('Edad',e['Edad'])}
@@ -1008,8 +1052,95 @@ function verEmpleado(dni) {
     <div class="info-sec"><div class="info-sec-head">Domicilio</div>
       ${ir('Localidad',e['Localidad'])} ${ir('Cód. Postal',e['Cod.Postal'])} ${ir('Dirección',(e['Direccion']||'')+(e['Num.']?' '+e['Num.']:'')+(e['Piso']?' P'+e['Piso']:'')+(e['Depart.']?' D'+e['Depart.']:''))}
     </div>`;
+
+  // Panel ART — buscar siniestros por DNI
+  renderARTHistorial(dni);
+
   openModal('modalVerEmpleado');
 }
+
+function switchProfileTab(tab, btn) {
+  document.querySelectorAll('.profile-tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.profile-tab-panel').forEach(p => p.classList.remove('active'));
+  // activar el botón clickeado (o el primero si viene del reset)
+  const btns = document.querySelectorAll('.profile-tab-btn');
+  if (tab === 'datos') { btns[0].classList.add('active'); document.getElementById('ve-panel-datos').classList.add('active'); }
+  else                 { btns[1].classList.add('active'); document.getElementById('ve-panel-art').classList.add('active'); }
+}
+
+function renderARTHistorial(dni) {
+  const siniestros = siniestrosData.filter(s => String(s['DNI']) === String(dni));
+  const countEl    = document.getElementById('ve-art-count');
+  const bodyEl     = document.getElementById('ve-art-body');
+
+  countEl.textContent = siniestros.length;
+
+  if (!siniestros.length) {
+    bodyEl.innerHTML = '<div class="art-hist-empty">✅ Sin historial de siniestros ART registrados.</div>';
+    return;
+  }
+
+  // Ordenar por fecha accidente descendente
+  const sorted = [...siniestros].sort((a,b) => {
+    const fa = parseDate(a['Fecha Accidente']), fb = parseDate(b['Fecha Accidente']);
+    if (!fa && !fb) return 0; if (!fa) return 1; if (!fb) return -1;
+    return fb - fa;
+  });
+
+  const diasTotal = siniestros.reduce((a,s) => a + (parseInt(s['Días de Baja'])||0), 0);
+
+  // Resumen rápido
+  const sinAlta = siniestros.filter(s => !s['Fecha Alta'] || String(s['Fecha Alta']).trim() === '').length;
+  let html = `
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-bottom:1.2rem;">
+      <div class="kpi-card kpi-blue" style="padding:.8rem 1rem;">
+        <div class="kpi-top"><div class="kpi-label" style="font-size:.6rem;">Total siniestros</div><div class="kpi-icon" style="font-size:.9rem;">📋</div></div>
+        <div class="kpi-val" style="font-size:1.5rem;">${siniestros.length}</div>
+      </div>
+      <div class="kpi-card ${sinAlta > 0 ? 'kpi-red' : 'kpi-green'}" style="padding:.8rem 1rem;">
+        <div class="kpi-top"><div class="kpi-label" style="font-size:.6rem;">${sinAlta > 0 ? 'Sin alta médica' : 'Todos con alta'}</div><div class="kpi-icon" style="font-size:.9rem;">${sinAlta > 0 ? '⚠️' : '✅'}</div></div>
+        <div class="kpi-val" style="font-size:1.5rem;">${sinAlta}</div>
+      </div>
+      <div class="kpi-card kpi-orange" style="padding:.8rem 1rem;">
+        <div class="kpi-top"><div class="kpi-label" style="font-size:.6rem;">Días de baja total</div><div class="kpi-icon" style="font-size:.9rem;">📅</div></div>
+        <div class="kpi-val" style="font-size:1.5rem;">${diasTotal}</div>
+      </div>
+    </div>`;
+
+  // Cards por siniestro
+  sorted.forEach(s => {
+    const tieneAlta = s['Fecha Alta'] && String(s['Fecha Alta']).trim() !== '';
+    const tipo = s['Tipo'] || '—';
+    const tipoPill = tipo.includes('Trabajo') ? 'pill-orange'
+      : tipo.includes('Itinere') ? 'pill-blue'
+      : tipo.includes('Enfermedad') ? 'pill-red' : 'pill-gray';
+    const reint = s['Reintegro ART'] === 'Sí'
+      ? '<span class="pill pill-green">Reintegro: Sí</span>'
+      : s['Reintegro ART'] === 'No'
+      ? '<span class="pill pill-red">Reintegro: No</span>' : '';
+
+    html += `
+    <div class="art-hist-card ${tieneAlta ? 'con-alta' : 'sin-alta'}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;">
+        <div class="art-hist-num">Siniestro N° ${s['Siniestro Nº'] || '—'}</div>
+        <div style="display:flex;gap:.4rem;align-items:center;">
+          <span class="pill ${tipoPill}">${tipo}</span>
+          ${tieneAlta ? '<span class="pill pill-green">Alta otorgada</span>' : '<span class="pill pill-red">Sin alta</span>'}
+          ${reint}
+        </div>
+      </div>
+      <div class="art-hist-grid">
+        <div class="art-hist-item"><strong>${s['Fecha Accidente']||'—'}</strong>F. Accidente</div>
+        <div class="art-hist-item"><strong>${s['Fecha Alta']||'—'}</strong>F. Alta</div>
+        <div class="art-hist-item"><strong>${s['Días de Baja']||'0'} días</strong>Días de baja</div>
+        <div class="art-hist-item" style="grid-column:span 3"><strong>${s['Descripción']||'Sin descripción'}</strong>Descripción</div>
+      </div>
+    </div>`;
+  });
+
+  bodyEl.innerHTML = html;
+}
+
 function ir(k,v){return `<div class="info-row"><span class="info-k">${k}</span><span class="info-v">${v||'—'}</span></div>`;}
 function editarDesdeVer(){closeModal('modalVerEmpleado');if(verDNI)abrirEditarEmpleado(verDNI);}
 
@@ -1825,9 +1956,9 @@ function parseDate(str) {
 }
 
 function renderAnalisis() {
-  const hoy    = new Date();
-  const desde  = new Date(hoy.getFullYear(), hoy.getMonth() - (periodoMeses - 1), 1);
-  const hasta  = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0);
+  const hoy   = new Date();
+  const desde = new Date(hoy.getFullYear(), hoy.getMonth() - (periodoMeses - 1), 1);
+  const hasta = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0);
 
   // Label período
   const fmtMes = d => d.toLocaleDateString('es-AR', { month: 'short', year: '2-digit' });
@@ -1836,22 +1967,30 @@ function renderAnalisis() {
       ? hoy.toLocaleDateString('es-AR', { month: 'long', year: 'numeric' })
       : fmtMes(desde) + ' — ' + fmtMes(hasta);
 
-  // Filtrar siniestros en el período por Fecha Accidente
+  // Todos los siniestros cuya Fecha Accidente cae en el período
   const enPeriodo = siniestrosData.filter(s => {
     const f = parseDate(s['Fecha Accidente']);
     return f && f >= desde && f <= hasta;
   });
 
-  // KPIs
-  const inactivos = enPeriodo.filter(s => !s['Fecha Alta'] || s['Fecha Alta'] === '');
-  const conAlta   = enPeriodo.filter(s => s['Fecha Alta'] && s['Fecha Alta'] !== '');
+  // Con alta = tienen Fecha Alta cargada (ya finalizaron)
+  // Sin alta = siguen de baja actualmente (independiente del período)
+  const conAlta  = enPeriodo.filter(s => s['Fecha Alta'] && String(s['Fecha Alta']).trim() !== '');
+  const sinAlta  = enPeriodo.filter(s => !s['Fecha Alta'] || String(s['Fecha Alta']).trim() === '');
+
+  // Actualmente inactivos por ART = TODOS los siniestros sin alta (no solo del período)
+  const inactivosART = siniestrosData.filter(s => !s['Fecha Alta'] || String(s['Fecha Alta']).trim() === '');
+
   const diasTotal = enPeriodo.reduce((a, s) => a + (parseInt(s['Días de Baja']) || 0), 0);
 
-  document.getElementById('an-total').textContent    = enPeriodo.length;
-  document.getElementById('an-inactivos').textContent = inactivos.length;
-  document.getElementById('an-altas').textContent    = conAlta.length;
-  document.getElementById('an-dias').textContent     = diasTotal;
-  document.getElementById('an-inactivos-badge').textContent = inactivos.length + ' personas';
+  document.getElementById('an-total').textContent     = enPeriodo.length;
+  document.getElementById('an-inactivos').textContent  = inactivosART.length;
+  document.getElementById('an-altas').textContent     = conAlta.length;
+  document.getElementById('an-dias').textContent      = diasTotal;
+  document.getElementById('an-inactivos-badge').textContent = inactivosART.length + ' personas';
+
+  // alias para tabla (usamos inactivosART en la tabla)
+  const inactivos = inactivosART;
 
   // ── GRÁFICO 1: Mensual (barras) ──
   const meses = [];
@@ -1868,7 +2007,8 @@ function renderAnalisis() {
   const countMesInact = meses.map(m =>
     siniestrosData.filter(s => {
       const f = parseDate(s['Fecha Accidente']);
-      return f && f.getFullYear() === m.year && f.getMonth() === m.month && (!s['Fecha Alta'] || s['Fecha Alta'] === '');
+      return f && f.getFullYear() === m.year && f.getMonth() === m.month
+        && (!s['Fecha Alta'] || String(s['Fecha Alta']).trim() === '');
     }).length
   );
 
@@ -1948,14 +2088,14 @@ function renderAnalisis() {
     }
   });
 
-  // ── GRÁFICO 4: Estado (dona pequeña) ──
+  // ── GRÁFICO 4: Estado (dona pequeña) — del período ──
   if (chartEstado) chartEstado.destroy();
   chartEstado = new Chart(document.getElementById('chartEstado'), {
     type: 'doughnut',
     data: {
-      labels: ['Con alta', 'Sin alta (inactivo)'],
+      labels: ['Dieron el alta', 'Aún sin alta'],
       datasets: [{
-        data: [conAlta.length, inactivos.length],
+        data: [conAlta.length, sinAlta.length],
         backgroundColor: ['rgba(22,163,74,.8)', 'rgba(220,38,38,.8)'],
         borderWidth: 2
       }]
@@ -2033,17 +2173,17 @@ function renderAnalisis() {
       <div class="kpi-card kpi-blue">
         <div class="kpi-top"><div class="kpi-label">Casos en el período</div><div class="kpi-icon">📋</div></div>
         <div class="kpi-val" id="an-total">—</div>
-        <div class="kpi-sub" id="an-total-sub">siniestros registrados</div>
+        <div class="kpi-sub" id="an-total-sub">accidentes en el período</div>
       </div>
       <div class="kpi-card kpi-red">
         <div class="kpi-top"><div class="kpi-label">Inactivos por ART</div><div class="kpi-icon">⚠️</div></div>
         <div class="kpi-val" id="an-inactivos">—</div>
-        <div class="kpi-sub">sin alta médica</div>
+        <div class="kpi-sub">actualmente sin alta médica</div>
       </div>
       <div class="kpi-card kpi-green">
         <div class="kpi-top"><div class="kpi-label">Con Alta</div><div class="kpi-icon">✅</div></div>
         <div class="kpi-val" id="an-altas">—</div>
-        <div class="kpi-sub">alta médica otorgada</div>
+        <div class="kpi-sub">dieron el alta en el período</div>
       </div>
       <div class="kpi-card kpi-orange">
         <div class="kpi-top"><div class="kpi-label">Días de baja</div><div class="kpi-icon">📅</div></div>
@@ -2083,7 +2223,7 @@ function renderAnalisis() {
     <!-- DETALLE: quiénes están inactivos por ART -->
     <div class="sec-hdr">
       <div class="sec-ico">⚠️</div>
-      <div class="sec-title">Personas inactivas por ART en el período</div>
+      <div class="sec-title">Personas actualmente inactivas por ART (sin alta médica)</div>
       <div class="sec-line"></div>
       <div class="sec-badge" id="an-inactivos-badge">—</div>
     </div>
