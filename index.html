@@ -898,8 +898,8 @@ footer strong{color:rgba(255,255,255,.75);}
 // URLS ENCRIPTADAS EN BASE64
 // ══════════════════════════════════════════════════════════════
 const _E = {
-  a: "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J6RHI5N2t2STdxYWdSUmxGbE1NWVZDU3pBYXFMcWxiR1FfNmtsUlNjamg1U041Rm1KQm5MSTRKbV9fUXpzT2N1VmQvZXhlYw==",
-  n: "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J5eFl2UjhZejFxeVRtbUI2azVaZkdhYy1Pb18zcnMydHhsc0dYQzFLLWRQQlRzeFV5ckVXbF9lVnI5UTlQMHYybDdZUS9leGVj"
+  a: "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J3VFN4eEMwS2ZhZ1E2ZWlsVXJkVXVPMlRGUlhaZXRRNTdrb2o3NkNCemhqbEdUYnFVSXRFYWgwVlg3dlZFS1BacHovZXhlYw==",
+  n: "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J3YmZlWEoxOEh0RHZHVkRZbnJ5aGJrWmFTR3M3S3lWLW16OVVfaXdVZGVQd2Y3cm83a0FELUsxenBMQlRaUFp2SlduUS9leGVj"
 };
 function _d(s){return decodeURIComponent(atob(s).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));}
 const ART_URL    = _d(_E.a);
@@ -1044,7 +1044,7 @@ function verEmpleado(dni) {
       ${ir('DNI',e['DNI'])} ${ir('CUIL',e['CUIL (ID Laboral)'])} ${ir('Sexo',e['Sexo'])} ${ir('Nacionalidad',e['Nacionalidad'])} ${ir('F. Nacimiento',e['F. Nacimiento'])} ${ir('Edad',e['Edad'])}
     </div>
     <div class="info-sec"><div class="info-sec-head">Laboral</div>
-      ${ir('Legajo',e['Leg.'])} ${ir('Razón Social',e['R.Social'])} ${ir('F. Inicio',e['F. Inicio'])} ${ir('Estado',e['Estado'])} ${e['F. Desvinculacion']?ir('F. Desvinculación',e['F. Desvinculacion']):''}
+      ${ir('Legajo',e['Leg.'])} ${ir('Razón Social',e['R.Social'])} ${ir('F. Inicio',e['F. Inicio'])} ${ir('Estado',e['Estado'])} ${e['F.Desvin.']?ir('F. Desvinculación',e['F.Desvin.']):''}
     </div>
     <div class="info-sec"><div class="info-sec-head">Contacto</div>
       ${ir('Teléfono',e['Telefono'])} ${ir('E-mail',e['E-mail'])}
@@ -1130,9 +1130,10 @@ function renderARTHistorial(dni) {
     const tipoPill = tipo.includes('Trabajo') ? 'pill-orange'
       : tipo.includes('Itinere') ? 'pill-blue'
       : tipo.includes('Enfermedad') ? 'pill-red' : 'pill-gray';
-    const reint = s['Reintegro ART'] === 'Sí'
+    const _r2 = String(s['Reintegro ART']||'').trim();
+    const reint = _r2==='Sí'||_r2==='Si'||_r2==='SI'||_r2==='si'
       ? '<span class="pill pill-green">Reintegro: Sí</span>'
-      : s['Reintegro ART'] === 'No'
+      : _r2==='No'||_r2==='NO'||_r2==='no'
       ? '<span class="pill pill-red">Reintegro: No</span>' : '';
 
     html += `
@@ -1146,8 +1147,8 @@ function renderARTHistorial(dni) {
         </div>
       </div>
       <div class="art-hist-grid">
-        <div class="art-hist-item"><strong>${s['Fecha Accidente']||'—'}</strong>F. Accidente</div>
-        <div class="art-hist-item"><strong>${s['Fecha Alta']||'—'}</strong>F. Alta</div>
+        <div class="art-hist-item"><strong>${fmtFecha(s['Fecha Accidente'])}</strong>F. Accidente</div>
+        <div class="art-hist-item"><strong>${fmtFecha(s['Fecha Alta'])}</strong>F. Alta</div>
         <div class="art-hist-item"><strong>${s['Días de Baja']||'0'} días</strong>Días de baja</div>
         <div class="art-hist-item" style="grid-column:span 3"><strong>${s['Descripción']||'Sin descripción'}</strong>Descripción</div>
       </div>
@@ -1189,7 +1190,7 @@ function abrirEditarEmpleado(dni) {
   document.getElementById('ef-rsocial').value   = e['R.Social']||'';
   document.getElementById('ef-finicio').value   = parseFecha(e['F. Inicio']);
   document.getElementById('ef-estado').value    = e['Estado']||'Activo';
-  document.getElementById('ef-fdesv').value     = parseFecha(e['F. Desvinculacion']);
+  document.getElementById('ef-fdesv').value     = parseFecha(e['F.Desvin.']);
   document.getElementById('ef-tel').value       = e['Telefono']||'';
   document.getElementById('ef-email').value     = e['E-mail']||'';
   document.getElementById('ef-loc').value       = e['Localidad']||'';
@@ -1227,7 +1228,7 @@ async function guardarEmpleado() {
     'Nacionalidad':       document.getElementById('ef-nac').value,
     'F. Nacimiento':      formatFecha(document.getElementById('ef-fnac').value),
     'F. Inicio':          formatFecha(document.getElementById('ef-finicio').value),
-    'F. Desvinculacion':  formatFecha(document.getElementById('ef-fdesv').value),
+    'F.Desvin.':  formatFecha(document.getElementById('ef-fdesv').value),
     'Estado':             document.getElementById('ef-estado').value,
     'Telefono':           document.getElementById('ef-tel').value,
     'E-mail':             document.getElementById('ef-email').value,
@@ -1317,17 +1318,18 @@ function renderSiniestros(data) {
     const tipoPill = tipo.includes('Trabajo') ? 'pill-orange'
       : tipo.includes('Itinere') ? 'pill-blue'
       : tipo.includes('Enfermedad') ? 'pill-red' : 'pill-gray';
-    const reintegro = s['Reintegro ART']==='Sí' ? `<span class="pill pill-green">Sí</span>`
-      : s['Reintegro ART']==='No' ? `<span class="pill pill-red">No</span>`
-      : `<span class="pill pill-gray">${s['Reintegro ART']||'—'}</span>`;
+    const _rart = String(s['Reintegro ART']||'').trim();
+    const reintegro = _rart==='Sí'||_rart==='Si'||_rart==='SI'||_rart==='si' ? `<span class="pill pill-green">Sí</span>`
+      : _rart==='No'||_rart==='NO'||_rart==='no' ? `<span class="pill pill-red">No</span>`
+      : `<span class="pill pill-gray">${_rart||'—'}</span>`;
     return `<tr>
       <td style="font-weight:700;color:var(--blue-dark)">${s['Siniestro Nº']||'—'}</td>
       <td style="font-weight:600;color:var(--gray-900)">${s['Apellido y Nombre']||'—'}</td>
       <td style="color:var(--gray-500);font-size:.75rem">${s['DNI']||'—'}</td>
       <td><span class="pill ${tipoPill}">${tipo}</span></td>
       <td style="font-size:.75rem">${s['Medio Informante']||'—'}</td>
-      <td style="font-size:.75rem">${s['Fecha Accidente']||'—'}</td>
-      <td style="font-size:.75rem">${s['Fecha Alta']||'—'}</td>
+      <td style="font-size:.75rem">${fmtFecha(s['Fecha Accidente'])}</td>
+      <td style="font-size:.75rem">${fmtFecha(s['Fecha Alta'])}</td>
       <td style="text-align:center;font-weight:700">${s['Días de Baja']||'0'}</td>
       <td>${reintegro}</td>
       <td>${estado}</td>
@@ -1963,16 +1965,31 @@ function setPeriodo(meses, btn) {
 // Parsear fecha dd/mm/yyyy o yyyy-mm-dd → Date
 function parseDate(str) {
   if (!str) return null;
-  str = str.trim();
+  str = String(str).trim();
+  // ISO format: 2024-12-11T03:00:00.000Z
+  if (str.includes('T')) {
+    const d = new Date(str);
+    return isNaN(d) ? null : d;
+  }
+  // dd/mm/yyyy
   if (str.includes('/')) {
     const [d, m, y] = str.split('/');
     return new Date(+y, +m - 1, +d);
   }
+  // yyyy-mm-dd
   if (str.includes('-')) {
     const [y, m, d] = str.split('-');
     return new Date(+y, +m - 1, +d);
   }
   return null;
+}
+
+// Formatear fecha para mostrar dd/mm/yyyy
+function fmtFecha(str) {
+  if (!str || String(str).trim() === '') return '—';
+  const d = parseDate(str);
+  if (!d || isNaN(d)) return str;
+  return d.toLocaleDateString('es-AR', {day:'2-digit', month:'2-digit', year:'numeric'});
 }
 
 function renderAnalisis() {
@@ -1995,11 +2012,11 @@ function renderAnalisis() {
 
   // Con alta = tienen Fecha Alta cargada (ya finalizaron)
   // Sin alta = siguen de baja actualmente (independiente del período)
-  const conAlta  = enPeriodo.filter(s => s['Fecha Alta'] && String(s['Fecha Alta']).trim() !== '');
-  const sinAlta  = enPeriodo.filter(s => !s['Fecha Alta'] || String(s['Fecha Alta']).trim() === '');
+  const conAlta  = enPeriodo.filter(s => s['Fecha Alta'] && String(s['Fecha Alta']).trim() !== '' && String(s['Fecha Alta']).trim() !== '0');
+  const sinAlta  = enPeriodo.filter(s => !s['Fecha Alta'] || String(s['Fecha Alta']).trim() === '' || String(s['Fecha Alta']).trim() === '0');
 
   // Actualmente inactivos por ART = TODOS los siniestros sin alta (no solo del período)
-  const inactivosART = siniestrosData.filter(s => !s['Fecha Alta'] || String(s['Fecha Alta']).trim() === '');
+  const inactivosART = siniestrosData.filter(s => { const fa = s['Fecha Alta']; return !fa || String(fa).trim() === '' || String(fa).trim() === '0'; });
 
   const diasTotal = enPeriodo.reduce((a, s) => a + (parseInt(s['Días de Baja']) || 0), 0);
 
