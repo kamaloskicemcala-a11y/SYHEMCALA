@@ -869,8 +869,8 @@ footer strong{color:rgba(255,255,255,.75);}
 // URLS ENCRIPTADAS EN BASE64
 // ══════════════════════════════════════════════════════════════
 const _E = {
-  a: "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J3UEM3dktWUmhTeUhmZ09OdlE0SjY1aGp6N3VyQmVHYWh6UmJLTi1vMVlhMms5VjA2ZURjU24zeVh5dXlCT0VkdlMvZXhlYw==",
-  n: "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J5azRqbGZkVzJ5azEzeTg3ZnpOc2dZQURlM00zUk5DWWwxb0xJeG1kZG9JQjhtbDRBeUV1cEZudjEwNld3QW9JM1hHQS9leGVj"
+  a: "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J6RHI5N2t2STdxYWdSUmxGbE1NWVZDU3pBYXFMcWxiR1FfNmtsUlNjamg1U041Rm1KQm5MSTRKbV9fUXpzT2N1VmQvZXhlYw==",
+  n: "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J5eFl2UjhZejFxeVRtbUI2azVaZkdhYy1Pb18zcnMydHhsc0dYQzFLLWRQQlRzeFV5ckVXbF9lVnI5UTlQMHYybDdZUS9leGVj"
 };
 function _d(s){return decodeURIComponent(atob(s).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));}
 const ART_URL    = _d(_E.a);
@@ -905,7 +905,7 @@ function buildURL(base, params) {
 // ══════════════════════════════════════════════════════════════
 async function fetchNomina() {
   try {
-    const res  = await fetch(NOMINA_URL + '?action=getNomina');
+    const res  = await fetch(NOMINA_URL + '?action=getNomina', {redirect:'follow'});
     const json = await res.json();
     if (json.success) {
       nominaData = json.data || [];
@@ -1092,7 +1092,7 @@ async function guardarEmpleado() {
     'Depart.':            (pisoDpto[1]||'').trim(),
   };
   try {
-    const res  = await fetch(buildURL(NOMINA_URL, params));
+    const res  = await fetch(buildURL(NOMINA_URL, params), {redirect:'follow'});
     const json = await res.json();
     if (json.success) {
       toast(json.message||'Empleado guardado ✓');
@@ -1111,7 +1111,7 @@ function confirmarEliminarEmpleado(dni, nombre) {
 
 async function eliminarEmpleado(dni) {
   try {
-    const res  = await fetch(buildURL(NOMINA_URL,{action:'deleteEmpleado',dni}));
+    const res  = await fetch(buildURL(NOMINA_URL,{action:'deleteEmpleado',dni}), {redirect:'follow'});
     const json = await res.json();
     if (json.success){ toast('Empleado eliminado'); await fetchNomina(); }
     else toast(json.error||'Error al eliminar', true);
@@ -1123,7 +1123,7 @@ async function eliminarEmpleado(dni) {
 // ══════════════════════════════════════════════════════════════
 async function fetchSiniestros() {
   try {
-    const res  = await fetch(ART_URL + '?action=getSiniestros');
+    const res  = await fetch(ART_URL + '?action=getSiniestros', {redirect:'follow'});
     const json = await res.json();
     if (json.success) {
       siniestrosData = json.data || [];
@@ -1254,7 +1254,7 @@ async function guardarSiniestro() {
     'Descripción':       document.getElementById('sf-descripcion').value,
   };
   try {
-    const res  = await fetch(buildURL(ART_URL, params));
+    const res  = await fetch(buildURL(ART_URL, params), {redirect:'follow'});
     const json = await res.json();
     if (json.success){ toast(json.message||'Siniestro guardado ✓'); closeModal('modalSiniestro'); await fetchSiniestros(); }
     else toast(json.error||'Error al guardar', true);
@@ -1270,7 +1270,7 @@ function confirmarEliminarSiniestro(n) {
 
 async function eliminarSiniestro(n) {
   try {
-    const res  = await fetch(buildURL(ART_URL,{action:'deleteSiniestro',num:n}));
+    const res  = await fetch(buildURL(ART_URL,{action:'deleteSiniestro',num:n}), {redirect:'follow'});
     const json = await res.json();
     if (json.success){ toast('Siniestro #'+n+' eliminado'); await fetchSiniestros(); }
     else toast(json.error||'Error al eliminar', true);
