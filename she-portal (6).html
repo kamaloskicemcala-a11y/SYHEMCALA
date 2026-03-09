@@ -1,0 +1,2113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seguridad e Higiene — Portal SHE</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#1a4fa0;--blue-dark:#0d2f6b;--blue-light:#e8f0fb;--blue-mid:#3a6ec4;--accent:#f5a623;--green:#16a34a;--green-light:#dcfce7;--red:#dc2626;--red-light:#fee2e2;--orange:#d97706;--orange-light:#fef3c7;--purple:#7c3aed;--purple-light:#ede9fe;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-500:#6b7280;--gray-700:#374151;--gray-900:#111827;--white:#ffffff;--shadow-sm:0 1px 3px rgba(0,0,0,0.08);--shadow-md:0 4px 12px rgba(0,0,0,0.10);--shadow-lg:0 8px 24px rgba(0,0,0,0.14);--radius:8px;--radius-sm:5px;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Open Sans',sans-serif;background:var(--gray-50);color:var(--gray-900);min-height:100vh;font-size:14px;}
+
+/* TOPBAR */
+.topbar{background:var(--white);border-bottom:1px solid var(--gray-200);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-sm);}
+.topbar-left{display:flex;align-items:center;gap:1rem;}
+.topbar-icon{font-size:2rem;line-height:1;}
+.topbar-divider{width:1px;height:32px;background:var(--gray-200);}
+.topbar-brand strong{display:block;font-family:'Montserrat',sans-serif;font-size:.92rem;font-weight:700;color:var(--blue-dark);}
+.topbar-brand span{font-size:.68rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:1px;}
+.topbar-right{display:flex;align-items:center;gap:.8rem;}
+.topbar-sync{background:var(--blue-light);border:1px solid var(--blue-light);color:var(--blue);padding:5px 14px;font-family:'Montserrat',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.5px;border-radius:var(--radius-sm);cursor:pointer;transition:all .18s;}
+.topbar-sync:hover{background:var(--blue);color:white;}
+
+/* NAV */
+nav{background:var(--blue-dark);padding:0 2rem;display:flex;align-items:center;height:46px;position:sticky;top:64px;z-index:99;gap:2px;}
+.nav-link{color:rgba(255,255,255,.7);font-size:.75rem;font-weight:600;font-family:'Montserrat',sans-serif;letter-spacing:1px;text-transform:uppercase;padding:0 1.1rem;height:46px;display:flex;align-items:center;cursor:pointer;border-bottom:3px solid transparent;border-top:3px solid transparent;transition:all .18s;user-select:none;white-space:nowrap;}
+.nav-link:hover{color:white;background:rgba(255,255,255,.07);}
+.nav-link.active{color:white;border-bottom-color:var(--accent);}
+.nav-spacer{flex:1;}
+.nav-status{font-size:.68rem;color:rgba(255,255,255,.45);font-family:'Montserrat',sans-serif;display:flex;align-items:center;gap:.4rem;}
+.ndot{width:6px;height:6px;border-radius:50%;background:#7dff9e;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+/* PAGES */
+.page{display:none;}.page.active{display:block;}
+
+/* BANNER */
+.banner{background:linear-gradient(135deg,var(--blue-dark) 0%,var(--blue) 55%,#2d6fd4 100%);padding:2.5rem 2.5rem;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;min-height:200px;}
+.banner::before{content:'';position:absolute;right:-40px;top:-40px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.04);}
+.banner-left{position:relative;z-index:2;max-width:580px;}
+.banner-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.9);font-size:.68rem;letter-spacing:2px;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:.8rem;font-family:'Montserrat',sans-serif;font-weight:600;}
+.bdot{width:6px;height:6px;border-radius:50%;background:#7dff9e;animation:blink 2s infinite;}
+.banner-title{font-family:'Montserrat',sans-serif;font-size:2rem;font-weight:800;color:white;line-height:1.15;margin-bottom:.5rem;}
+.banner-title span{color:var(--accent);}
+.banner-desc{color:rgba(255,255,255,.7);font-size:.85rem;line-height:1.7;margin-bottom:1.5rem;max-width:460px;}
+.banner-stats{display:flex;gap:2rem;}
+.bstat{border-left:3px solid rgba(255,255,255,.22);padding-left:1rem;}
+.bstat-val{font-family:'Montserrat',sans-serif;font-size:1.5rem;font-weight:800;color:white;}
+.bstat-lbl{font-size:.63rem;color:rgba(255,255,255,.55);letter-spacing:1px;text-transform:uppercase;margin-top:1px;}
+.banner-right{position:relative;z-index:2;font-size:4rem;}
+
+/* CONTENT */
+.content{padding:1.8rem 2.5rem;max-width:1400px;margin:0 auto;}
+.sec-hdr{display:flex;align-items:center;gap:.8rem;margin-bottom:1.2rem;}
+.sec-ico{width:32px;height:32px;background:var(--blue-light);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+.sec-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.95rem;color:var(--blue-dark);}
+.sec-line{flex:1;height:1px;background:var(--gray-200);}
+.sec-badge{font-size:.62rem;font-family:'Montserrat',sans-serif;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);background:var(--blue-light);padding:3px 10px;border-radius:20px;}
+
+/* KPI GRID */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
+.kpi-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:1.2rem;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;transition:box-shadow .2s,transform .2s;}
+.kpi-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.kpi-blue::before{background:var(--blue);}.kpi-green::before{background:var(--green);}
+.kpi-orange::before{background:var(--orange);}.kpi-red::before{background:var(--red);}
+.kpi-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.7rem;}
+.kpi-label{font-size:.68rem;color:var(--gray-500);font-family:'Montserrat',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.5px;line-height:1.3;max-width:120px;}
+.kpi-icon{font-size:1.3rem;}
+.kpi-val{font-family:'Montserrat',sans-serif;font-size:1.9rem;font-weight:800;color:var(--gray-900);line-height:1;}
+.kpi-sub{font-size:.67rem;color:var(--gray-400);margin-top:.3rem;}
+
+/* ADMIN LAYOUT */
+.admin-layout{display:grid;grid-template-columns:220px 1fr;gap:1.5rem;padding:1.8rem 2.5rem;max-width:1400px;margin:0 auto;}
+.admin-sidebar{display:flex;flex-direction:column;gap:.3rem;}
+.admin-menu-item{display:flex;align-items:center;gap:.7rem;padding:.72rem 1rem;border-radius:var(--radius-sm);cursor:pointer;font-size:.8rem;font-family:'Montserrat',sans-serif;font-weight:600;color:var(--gray-700);transition:all .18s;border:1px solid transparent;}
+.admin-menu-item:hover{background:var(--blue-light);color:var(--blue);}
+.admin-menu-item.active{background:var(--blue);color:white;border-color:var(--blue);}
+.admin-menu-item .amic{font-size:1rem;}
+.admin-menu-sep{font-size:.6rem;font-family:'Montserrat',sans-serif;font-weight:700;color:var(--gray-400);letter-spacing:2px;text-transform:uppercase;padding:.5rem 1rem .2rem;margin-top:.3rem;}
+.admin-content{min-width:0;}
+.admin-panel{display:none;}.admin-panel.active{display:block;}
+
+/* CARDS */
+.admin-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:1.4rem;box-shadow:var(--shadow-sm);margin-bottom:1.2rem;}
+.admin-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;}
+.admin-card-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.95rem;color:var(--blue-dark);}
+.admin-card-sub{font-size:.7rem;color:var(--gray-400);margin-top:2px;}
+
+/* BUTTONS */
+.btn{padding:.58rem 1.1rem;font-family:'Montserrat',sans-serif;font-size:.74rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;border-radius:var(--radius-sm);cursor:pointer;transition:all .18s;border:none;display:inline-flex;align-items:center;gap:.4rem;}
+.btn-primary{background:var(--blue-dark);color:white;}.btn-primary:hover{background:var(--blue);}
+.btn-secondary{background:var(--white);color:var(--gray-700);border:1.5px solid var(--gray-300);}.btn-secondary:hover{border-color:var(--blue);color:var(--blue);}
+.btn-danger{background:var(--red-light);color:var(--red);border:1.5px solid var(--red-light);}.btn-danger:hover{background:var(--red);color:white;}
+.btn-success{background:var(--green);color:white;}.btn-success:hover{background:#15803d;}
+.btn-sm{padding:.32rem .85rem;font-size:.66rem;}
+
+/* TABLES */
+.admin-table-wrap{overflow-x:auto;}
+.admin-table{width:100%;border-collapse:collapse;font-size:.8rem;}
+.admin-table thead{background:var(--gray-50);border-bottom:2px solid var(--gray-200);}
+.admin-table th{padding:.65rem .9rem;font-size:.62rem;font-family:'Montserrat',sans-serif;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue-dark);text-align:left;white-space:nowrap;}
+.admin-table td{padding:.7rem .9rem;border-bottom:1px solid var(--gray-100);color:var(--gray-700);vertical-align:middle;}
+.admin-table tr:last-child td{border-bottom:none;}
+.admin-table tr:hover td{background:var(--blue-light);}
+.actions-cell{display:flex;gap:.35rem;align-items:center;}
+
+/* TOOLBAR */
+.personnel-toolbar{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:1rem 1.4rem;display:flex;gap:.8rem;align-items:center;box-shadow:var(--shadow-sm);margin-bottom:1.1rem;flex-wrap:wrap;}
+.search-wrap{flex:1;min-width:200px;position:relative;}
+.search-ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:.9rem;pointer-events:none;}
+.search-input{width:100%;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);padding:.58rem .9rem .58rem 2.2rem;font-size:.82rem;color:var(--gray-900);outline:none;transition:border-color .2s;font-family:'Open Sans',sans-serif;}
+.search-input:focus{border-color:var(--blue);}
+.filter-select{border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);padding:.55rem .8rem;font-size:.78rem;color:var(--gray-700);outline:none;cursor:pointer;font-family:'Open Sans',sans-serif;background:var(--white);transition:border-color .2s;min-width:130px;}
+.filter-select:focus{border-color:var(--blue);}
+.results-info{font-size:.72rem;color:var(--gray-400);font-family:'Montserrat',sans-serif;font-weight:600;margin-bottom:.7rem;}
+
+/* PILLS / BADGES */
+.pill{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:12px;font-size:.65rem;font-family:'Montserrat',sans-serif;font-weight:700;}
+.pill-green{background:var(--green-light);color:var(--green);}
+.pill-orange{background:var(--orange-light);color:var(--orange);}
+.pill-red{background:var(--red-light);color:var(--red);}
+.pill-blue{background:var(--blue-light);color:var(--blue);}
+.pill-gray{background:var(--gray-100);color:var(--gray-500);}
+.sdot{width:5px;height:5px;border-radius:50%;display:inline-block;}
+.dot-g{background:var(--green);}.dot-o{background:var(--orange);}.dot-r{background:var(--red);}
+
+/* FORMS */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.form-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
+.form-full{grid-column:1/-1;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-label{font-size:.67rem;font-family:'Montserrat',sans-serif;font-weight:700;color:var(--gray-700);text-transform:uppercase;letter-spacing:1px;}
+.form-label .req{color:var(--red);}
+.form-control{border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);padding:.58rem .8rem;font-size:.83rem;color:var(--gray-900);outline:none;transition:border-color .2s;font-family:'Open Sans',sans-serif;background:var(--white);}
+.form-control:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,79,160,.07);}
+.form-control:read-only{background:var(--gray-50);color:var(--gray-500);}
+textarea.form-control{resize:vertical;min-height:80px;}
+.form-actions{display:flex;gap:.7rem;justify-content:flex-end;padding-top:1rem;border-top:1px solid var(--gray-200);margin-top:1rem;}
+.admin-tabs{display:flex;gap:0;border-bottom:2px solid var(--gray-200);margin-bottom:1.4rem;}
+.admin-tab{padding:.62rem 1.2rem;font-size:.74rem;font-family:'Montserrat',sans-serif;font-weight:700;color:var(--gray-500);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .18s;}
+.admin-tab:hover{color:var(--blue);}
+.admin-tab.active{color:var(--blue);border-bottom-color:var(--blue);}
+.admin-tab-content{display:none;}.admin-tab-content.active{display:block;}
+
+/* MODALS */
+.modal-overlay{position:fixed;inset:0;background:rgba(13,47,107,.45);z-index:600;display:none;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--white);border-radius:12px;box-shadow:0 24px 60px rgba(0,0,0,.2);position:relative;max-height:92vh;overflow-y:auto;}
+.modal-box.sm{width:480px;max-width:96vw;}.modal-box.md{width:680px;max-width:96vw;}.modal-box.lg{width:860px;max-width:96vw;}
+.modal-head{padding:1.3rem 1.8rem;border-bottom:1px solid var(--gray-200);display:flex;align-items:center;justify-content:space-between;}
+.modal-head h3{font-family:'Montserrat',sans-serif;font-weight:700;font-size:1rem;color:var(--blue-dark);}
+.modal-close-btn{background:var(--gray-100);border:none;color:var(--gray-500);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .18s;}
+.modal-close-btn:hover{background:var(--red-light);color:var(--red);}
+.modal-body{padding:1.4rem 1.8rem;}
+.modal-foot{padding:.9rem 1.8rem;border-top:1px solid var(--gray-200);display:flex;gap:.7rem;justify-content:flex-end;}
+
+/* PROFILE MODAL TOP */
+.profile-modal-top{background:linear-gradient(135deg,var(--blue-dark),var(--blue));padding:1.6rem 2rem;display:flex;align-items:center;gap:1.4rem;border-radius:12px 12px 0 0;position:relative;}
+.modal-avatar-lg{width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.15);border:3px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0;}
+.modal-info-head h2{font-family:'Montserrat',sans-serif;font-size:1.3rem;font-weight:800;color:white;margin-bottom:.2rem;}
+.modal-leg{font-size:.7rem;color:rgba(255,255,255,.6);font-family:'Montserrat',sans-serif;letter-spacing:1px;margin-bottom:.4rem;}
+.modal-close-top{position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:white;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .18s;}
+.modal-close-top:hover{background:rgba(255,255,255,.28);}
+.profile-modal-body{display:grid;grid-template-columns:1fr 1fr;gap:1rem;padding:1.4rem 1.8rem;}
+.info-sec{border:1px solid var(--gray-200);border-radius:var(--radius-sm);overflow:hidden;}
+.info-sec-head{background:var(--gray-50);padding:.5rem .9rem;font-size:.6rem;font-family:'Montserrat',sans-serif;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue-dark);border-bottom:1px solid var(--gray-200);}
+.info-row{display:flex;justify-content:space-between;padding:.5rem .9rem;border-bottom:1px solid var(--gray-100);gap:1rem;align-items:baseline;}
+.info-row:last-child{border-bottom:none;}
+.info-k{font-size:.69rem;color:var(--gray-400);flex-shrink:0;}
+.info-v{font-size:.75rem;color:var(--gray-900);font-weight:600;text-align:right;}
+
+/* ALERT */
+.alert{padding:.7rem 1rem;border-radius:var(--radius-sm);font-size:.78rem;margin-bottom:1rem;display:flex;align-items:center;gap:.6rem;font-family:'Montserrat',sans-serif;font-weight:600;}
+.alert-success{background:var(--green-light);color:var(--green);border:1px solid rgba(22,163,74,.2);}
+.alert-error{background:var(--red-light);color:var(--red);border:1px solid rgba(220,38,38,.2);}
+.alert-info{background:var(--blue-light);color:var(--blue);border:1px solid rgba(26,79,160,.2);}
+
+/* LOADER */
+.tbl-loading{text-align:center;padding:3rem;color:var(--gray-400);font-family:'Montserrat',sans-serif;font-size:.82rem;}
+.spinner{display:inline-block;width:22px;height:22px;border:3px solid var(--gray-200);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:.5rem;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* TOAST */
+.toast-wrap{position:fixed;bottom:24px;right:24px;z-index:999;display:flex;flex-direction:column;gap:8px;}
+.toast{background:var(--white);border:1px solid var(--gray-200);border-left:3px solid var(--green);border-radius:var(--radius-sm);padding:11px 16px;font-size:.78rem;font-family:'Montserrat',sans-serif;font-weight:600;animation:slideIn .2s ease;max-width:300px;box-shadow:var(--shadow-md);}
+.toast.err{border-left-color:var(--red);}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
+
+/* CONFIRM MODAL */
+#confirmModal .modal-body p{font-size:.85rem;color:var(--gray-700);line-height:1.6;}
+
+/* SCROLL */
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--gray-50);}::-webkit-scrollbar-thumb{background:var(--gray-300);border-radius:3px;}::-webkit-scrollbar-thumb:hover{background:var(--blue);}
+
+/* FOOTER */
+footer{background:var(--blue-dark);color:rgba(255,255,255,.45);padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;font-size:.67rem;font-family:'Montserrat',sans-serif;margin-top:2rem;}
+footer strong{color:rgba(255,255,255,.75);}
+
+/* LOGIN OVERLAY */
+.login-overlay{position:fixed;inset:0;background:linear-gradient(135deg,var(--blue-dark) 0%,#1a3a7a 50%,#0d2f6b 100%);z-index:1000;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(0);}
+.login-overlay.hidden{display:none;}
+.login-box{background:var(--white);border-radius:14px;width:440px;max-width:96vw;box-shadow:0 32px 80px rgba(0,0,0,.35);overflow:hidden;}
+.login-header{background:linear-gradient(135deg,var(--blue-dark),var(--blue));padding:2rem 2.2rem;text-align:center;position:relative;}
+.login-header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--accent);}
+.login-logo{font-size:2.8rem;margin-bottom:.8rem;display:block;}
+.login-header h2{font-family:'Montserrat',sans-serif;font-size:1.15rem;font-weight:800;color:white;letter-spacing:1px;text-transform:uppercase;}
+.login-header p{color:rgba(255,255,255,.6);font-size:.7rem;margin-top:.25rem;letter-spacing:1px;text-transform:uppercase;}
+.login-body{padding:1.8rem 2.2rem;}
+.login-divider{display:flex;align-items:center;gap:.8rem;margin:1.2rem 0;font-size:.68rem;color:var(--gray-400);font-family:'Montserrat',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+.login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:var(--gray-200);}
+.login-btn{width:100%;padding:.78rem;border:none;border-radius:var(--radius-sm);font-family:'Montserrat',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.login-btn-admin{background:var(--blue-dark);color:white;}
+.login-btn-admin:hover{background:var(--blue);}
+.login-btn-visitante{background:var(--gray-100);color:var(--gray-700);border:1.5px solid var(--gray-200);}
+.login-btn-visitante:hover{background:var(--blue-light);border-color:var(--blue);color:var(--blue);}
+.login-error{color:var(--red);font-size:.72rem;margin-top:.5rem;display:none;font-family:'Montserrat',sans-serif;font-weight:600;text-align:center;background:var(--red-light);padding:.5rem;border-radius:var(--radius-sm);}
+.login-input-wrap{margin-bottom:.9rem;}
+.login-input-wrap label{display:block;font-size:.68rem;font-family:'Montserrat',sans-serif;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:1px;margin-bottom:.35rem;}
+.login-input-wrap input{width:100%;padding:.62rem .85rem;border:1.5px solid var(--gray-200);border-radius:var(--radius-sm);font-size:.85rem;font-family:'Open Sans',sans-serif;outline:none;transition:border .18s;color:var(--gray-900);}
+.login-input-wrap input:focus{border-color:var(--blue);}
+.nav-user{display:flex;align-items:center;gap:.5rem;font-size:.7rem;color:rgba(255,255,255,.65);font-family:'Montserrat',sans-serif;}
+.nav-role-badge{padding:2px 9px;border-radius:12px;font-size:.6rem;font-weight:700;font-family:'Montserrat',sans-serif;}
+.nrb-admin{background:rgba(245,166,35,.2);color:#fbbf24;border:1px solid rgba(245,166,35,.3);}
+.nrb-visitante{background:rgba(52,211,153,.2);color:#6ee7b7;border:1px solid rgba(52,211,153,.3);}
+.nav-logout-btn{background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.65);padding:3px 10px;font-size:.68rem;font-family:'Montserrat',sans-serif;font-weight:700;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;border-radius:4px;margin-left:.3rem;}
+.nav-logout-btn:hover{background:rgba(255,255,255,.1);color:white;}
+
+/* NOTICIAS — estilo portal Emcala */
+.news-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr;gap:1rem;margin-bottom:2rem;}
+.news-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);cursor:pointer;transition:box-shadow .2s,transform .2s;}
+.news-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.news-card.featured{grid-row:span 2;}
+.news-img{width:100%;background:linear-gradient(135deg,var(--blue-light),#c7d9f5);display:flex;align-items:center;justify-content:center;font-size:2.8rem;height:140px;position:relative;}
+.news-card.featured .news-img{height:210px;}
+.nbadge{position:absolute;top:10px;left:10px;font-size:.6rem;font-family:'Montserrat',sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:20px;}
+.nb-red{background:var(--red);color:white;}.nb-blue{background:var(--blue);color:white;}
+.nb-green{background:var(--green);color:white;}.nb-orange{background:var(--accent);color:#111;}
+.nb-gray{background:var(--gray-700);color:white;}
+.news-body{padding:.9rem 1.1rem 1.1rem;}
+.news-date{font-size:.62rem;color:var(--gray-400);text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem;font-family:'Montserrat',sans-serif;font-weight:600;}
+.news-title{font-family:'Montserrat',sans-serif;font-size:.85rem;font-weight:700;color:var(--gray-900);line-height:1.35;margin-bottom:.4rem;}
+.news-card.featured .news-title{font-size:1rem;}
+.news-desc{font-size:.75rem;color:var(--gray-500);line-height:1.6;}
+.news-actions{display:flex;gap:.4rem;padding:.7rem 1.1rem;border-top:1px solid var(--gray-100);}
+
+/* ACHIEVE — estilo portal Emcala */
+.achieve-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
+.achieve-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:1.3rem 1.1rem;text-align:center;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;transition:box-shadow .2s;}
+.achieve-card:hover{box-shadow:var(--shadow-md);}
+.achieve-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--accent));}
+.achieve-icon{font-size:2rem;margin-bottom:.6rem;}
+.achieve-val{font-family:'Montserrat',sans-serif;font-size:1.9rem;font-weight:800;color:var(--blue-dark);}
+.achieve-lbl{font-size:.68rem;color:var(--gray-400);margin-top:.25rem;line-height:1.4;text-transform:uppercase;letter-spacing:.5px;}
+
+/* COMUNICADOS */
+.comunicado-item{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:1rem 1.2rem;display:flex;gap:1rem;align-items:flex-start;box-shadow:var(--shadow-sm);transition:box-shadow .2s;margin-bottom:.7rem;}
+.comunicado-item:hover{box-shadow:var(--shadow-md);}
+.com-icon{width:38px;height:38px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.com-urgente{background:var(--red-light);}.com-info{background:var(--blue-light);}.com-logro{background:var(--green-light);}.com-aviso{background:var(--orange-light);}
+.com-body{flex:1;}
+.com-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.83rem;color:var(--gray-900);margin-bottom:.2rem;}
+.com-desc{font-size:.74rem;color:var(--gray-500);line-height:1.5;}
+.com-date{font-size:.62rem;color:var(--gray-400);margin-top:.3rem;font-family:'Montserrat',sans-serif;}
+.com-actions{display:flex;gap:.4rem;align-items:center;flex-shrink:0;}
+
+/* ADMIN ONLY */
+.admin-only{display:none;}
+@media(max-width:900px){.news-grid{grid-template-columns:1fr;}.achieve-grid{grid-template-columns:repeat(2,1fr);}}
+
+/* PERSONAL DESTACADO */
+.staff-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
+.staff-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:1.3rem 1rem 1rem;text-align:center;box-shadow:var(--shadow-sm);transition:all .2s;position:relative;}
+.staff-card:hover{box-shadow:var(--shadow-md);border-color:var(--blue);}
+.staff-medal{position:absolute;top:10px;right:12px;font-size:1.1rem;}
+.staff-avatar{width:72px;height:72px;border-radius:50%;border:3px solid var(--blue-light);margin:0 auto .8rem;overflow:hidden;background:var(--gray-50);display:flex;align-items:center;justify-content:center;font-size:1.9rem;}
+.staff-avatar img{width:100%;height:100%;object-fit:cover;}
+.staff-name{font-family:'Montserrat',sans-serif;font-size:.84rem;font-weight:700;color:var(--gray-900);margin-bottom:.2rem;}
+.staff-role{font-size:.67rem;color:var(--blue);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+.staff-dept{font-size:.65rem;color:var(--gray-400);margin-top:.15rem;}
+.staff-actions{display:flex;gap:.4rem;justify-content:center;margin-top:.8rem;}
+.staff-add-card{background:var(--white);border:2px dashed var(--gray-300);border-radius:var(--radius);padding:1.3rem 1rem;text-align:center;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;min-height:170px;}
+.staff-add-card:hover{border-color:var(--blue);background:var(--blue-light);}
+.staff-add-icon{font-size:1.8rem;color:var(--gray-300);}
+.staff-add-card:hover .staff-add-icon{color:var(--blue);}
+.staff-add-lbl{font-size:.72rem;font-family:'Montserrat',sans-serif;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:1px;}
+.staff-add-card:hover .staff-add-lbl{color:var(--blue);}
+
+/* MODAL STAFF */
+.staff-foto-preview{width:90px;height:90px;border-radius:50%;border:3px solid var(--blue-light);margin:0 auto .8rem;overflow:hidden;background:var(--gray-100);display:flex;align-items:center;justify-content:center;font-size:2.2rem;}
+.staff-foto-preview img{width:100%;height:100%;object-fit:cover;}
+
+/* ANÁLISIS */
+.analisis-toolbar{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:1rem 1.5rem;display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;box-shadow:var(--shadow-sm);margin-bottom:1.5rem;}
+.periodo-btn{padding:.45rem 1.1rem;font-family:'Montserrat',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;border-radius:20px;cursor:pointer;transition:all .18s;border:1.5px solid var(--gray-200);background:var(--white);color:var(--gray-500);}
+.periodo-btn:hover{border-color:var(--blue);color:var(--blue);}
+.periodo-btn.active{background:var(--blue-dark);color:white;border-color:var(--blue-dark);}
+.analisis-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.8rem;}
+.charts-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem;margin-bottom:1.8rem;}
+.chart-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:1.3rem;box-shadow:var(--shadow-sm);}
+.chart-card.wide{grid-column:span 2;}
+.chart-title{font-family:'Montserrat',sans-serif;font-weight:700;font-size:.85rem;color:var(--gray-700);margin-bottom:.2rem;}
+.chart-sub{font-size:.68rem;color:var(--gray-400);margin-bottom:1rem;}
+.chart-wrap{position:relative;height:220px;}
+.chart-wrap-sm{position:relative;height:180px;}
+.detalle-table-wrap{overflow-x:auto;}
+</style>
+</head>
+<body>
+
+<!-- ══ TOAST ══ -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- ══ CONFIRM MODAL ══ -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-box sm">
+    <div class="modal-head"><h3 id="confirmTitle">Confirmar acción</h3><button class="modal-close-btn" onclick="closeModal('confirmModal')">✕</button></div>
+    <div class="modal-body"><p id="confirmMsg"></p></div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('confirmModal')">Cancelar</button>
+      <button class="btn btn-danger" id="confirmOkBtn">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL DETALLE EMPLEADO ══ -->
+<div class="modal-overlay" id="modalVerEmpleado">
+  <div class="modal-box lg" style="border-radius:12px">
+    <div class="profile-modal-top">
+      <button class="modal-close-top" onclick="closeModal('modalVerEmpleado')">✕</button>
+      <div class="modal-avatar-lg">👷</div>
+      <div class="modal-info-head">
+        <h2 id="ve-nombre"></h2>
+        <div class="modal-leg" id="ve-leg"></div>
+      </div>
+    </div>
+    <div class="profile-modal-body" id="ve-body"></div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('modalVerEmpleado')">Cerrar</button>
+      <button class="btn btn-primary" onclick="editarDesdeVer()">✏️ Editar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL EMPLEADO FORM ══ -->
+<div class="modal-overlay" id="modalEmpleado">
+  <div class="modal-box lg">
+    <div class="modal-head">
+      <h3 id="modalEmpleadoTitle">Nuevo Empleado</h3>
+      <button class="modal-close-btn" onclick="closeModal('modalEmpleado')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="admin-tabs">
+        <div class="admin-tab active" onclick="switchTab(this,'tabEDatos')">Datos Personales</div>
+        <div class="admin-tab" onclick="switchTab(this,'tabELaboral')">Laboral</div>
+        <div class="admin-tab" onclick="switchTab(this,'tabEContacto')">Contacto y Domicilio</div>
+      </div>
+      <div class="admin-tab-content active" id="tabEDatos">
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Apellidos <span class="req">*</span></label><input class="form-control" id="ef-apellidos" placeholder="Ej: García"></div>
+          <div class="form-group"><label class="form-label">Nombres <span class="req">*</span></label><input class="form-control" id="ef-nombres" placeholder="Ej: Juan Carlos"></div>
+          <div class="form-group"><label class="form-label">DNI <span class="req">*</span></label><input class="form-control" id="ef-dni" placeholder="Sin puntos. Ej: 30123456"></div>
+          <div class="form-group"><label class="form-label">CUIL</label><input class="form-control" id="ef-cuil" placeholder="20-12345678-9"></div>
+          <div class="form-group"><label class="form-label">F. Nacimiento</label><input class="form-control" id="ef-fnac" type="date"></div>
+          <div class="form-group"><label class="form-label">Sexo</label><select class="form-control" id="ef-sexo"><option value="">Seleccionar...</option><option value="M">Masculino</option><option value="F">Femenino</option></select></div>
+          <div class="form-group"><label class="form-label">Nacionalidad</label><input class="form-control" id="ef-nac" placeholder="Argentina"></div>
+        </div>
+      </div>
+      <div class="admin-tab-content" id="tabELaboral">
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Legajo</label><input class="form-control" id="ef-leg" placeholder="Nº de legajo"></div>
+          <div class="form-group"><label class="form-label">Razón Social</label><input class="form-control" id="ef-rsocial" placeholder="Ej: Emcala S.R.L."></div>
+          <div class="form-group"><label class="form-label">F. Inicio</label><input class="form-control" id="ef-finicio" type="date"></div>
+          <div class="form-group"><label class="form-label">Estado</label><select class="form-control" id="ef-estado"><option value="Activo">Activo</option><option value="Inactivo">Inactivo</option></select></div>
+          <div class="form-group"><label class="form-label">F. Desvinculación</label><input class="form-control" id="ef-fdesv" type="date"></div>
+        </div>
+      </div>
+      <div class="admin-tab-content" id="tabEContacto">
+        <div class="form-grid">
+          <div class="form-group"><label class="form-label">Teléfono</label><input class="form-control" id="ef-tel" placeholder="+54 11 0000-0000"></div>
+          <div class="form-group"><label class="form-label">E-mail</label><input class="form-control" id="ef-email" type="email"></div>
+          <div class="form-group"><label class="form-label">Localidad</label><input class="form-control" id="ef-loc"></div>
+          <div class="form-group"><label class="form-label">Cód. Postal</label><input class="form-control" id="ef-cp"></div>
+          <div class="form-group form-full"><label class="form-label">Dirección</label><input class="form-control" id="ef-dir" placeholder="Calle"></div>
+          <div class="form-group"><label class="form-label">Número</label><input class="form-control" id="ef-num"></div>
+          <div class="form-group"><label class="form-label">Piso / Dpto.</label><input class="form-control" id="ef-piso" placeholder="Piso — Dpto."></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('modalEmpleado')">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarEmpleado()">💾 Guardar Empleado</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL SINIESTRO FORM ══ -->
+<div class="modal-overlay" id="modalSiniestro">
+  <div class="modal-box md">
+    <div class="modal-head">
+      <h3 id="modalSiniestroTitle">Nuevo Siniestro ART</h3>
+      <button class="modal-close-btn" onclick="closeModal('modalSiniestro')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">DNI Empleado <span class="req">*</span></label><input class="form-control" id="sf-dni" placeholder="Ej: 30123456"></div>
+        <div class="form-group"><label class="form-label">Apellido y Nombre <span class="req">*</span></label><input class="form-control" id="sf-nombre" placeholder="Apellido, Nombre"></div>
+        <div class="form-group"><label class="form-label">Tipo <span class="req">*</span></label>
+          <select class="form-control" id="sf-tipo">
+            <option value="">Seleccionar...</option>
+            <option>Accidente de Trabajo</option>
+            <option>Accidente In Itinere</option>
+            <option>Enfermedad Profesional</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Medio Informante</label><input class="form-control" id="sf-medio" placeholder="Ej: Supervisor, RRHH"></div>
+        <div class="form-group"><label class="form-label">Fecha Accidente</label><input class="form-control" id="sf-fecha-acc" type="date"></div>
+        <div class="form-group"><label class="form-label">Fecha Conocimiento</label><input class="form-control" id="sf-fecha-con" type="date"></div>
+        <div class="form-group"><label class="form-label">Fecha Alta</label><input class="form-control" id="sf-fecha-alta" type="date"></div>
+        <div class="form-group"><label class="form-label">Días de Baja</label><input class="form-control" id="sf-dias" type="number" min="0" value="0"></div>
+        <div class="form-group"><label class="form-label">Reintegro ART</label>
+          <select class="form-control" id="sf-reintegro">
+            <option value="">Seleccionar...</option>
+            <option>Sí</option><option>No</option><option>Pendiente</option>
+          </select>
+        </div>
+        <div class="form-group form-full"><label class="form-label">Descripción</label><textarea class="form-control" id="sf-descripcion" placeholder="Descripción del siniestro..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('modalSiniestro')">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarSiniestro()">💾 Guardar Siniestro</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ LOGIN OVERLAY ══ -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-header">
+      <span class="login-logo">🦺</span>
+      <h2>Seguridad e Higiene</h2>
+      <p>Portal SHE — Acceso al sistema</p>
+    </div>
+    <div class="login-body">
+      <button class="login-btn login-btn-visitante" onclick="loginVisitante()" style="margin-bottom:1rem;">
+        🌐 Ver Página de Inicio
+      </button>
+      <div class="login-divider">o ingresá como administrador</div>
+      <div class="login-input-wrap">
+        <label>Usuario</label>
+        <input type="text" id="loginUser" placeholder="Ingresá tu usuario" autocomplete="username"
+          onkeydown="if(event.key==='Enter')document.getElementById('loginPass').focus()">
+      </div>
+      <div class="login-input-wrap">
+        <label>Contraseña</label>
+        <input type="password" id="loginPass" placeholder="Ingresá tu contraseña" autocomplete="current-password"
+          onkeydown="if(event.key==='Enter')loginAdmin()">
+      </div>
+      <div class="login-error" id="loginError">Usuario o contraseña incorrectos.</div>
+      <button class="login-btn login-btn-admin" onclick="loginAdmin()">🔐 Ingresar como Administrador</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL NOTICIA ══ -->
+<div class="modal-overlay" id="modalNoticia">
+  <div class="modal-box md">
+    <div class="modal-head">
+      <h3 id="modalNoticiaTitle">Nueva Noticia / Comunicado</h3>
+      <button class="modal-close-btn" onclick="closeModal('modalNoticia')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group form-full">
+          <label class="form-label">Título <span class="req">*</span></label>
+          <input class="form-control" id="nf-titulo" placeholder="Ej: Capacitación de EPP — Fecha actualizada">
+        </div>
+        <div class="form-group form-full">
+          <label class="form-label">Descripción</label>
+          <textarea class="form-control" id="nf-desc" placeholder="Descripción del comunicado o noticia..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Categoría</label>
+          <select class="form-control" id="nf-cat">
+            <option value="nb-blue">ℹ️ Información</option>
+            <option value="nb-red">🚨 Urgente</option>
+            <option value="nb-green">✅ Logro</option>
+            <option value="nb-orange">⚠️ Aviso</option>
+            <option value="nb-gray">📋 General</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Ícono / Emoji</label>
+          <input class="form-control" id="nf-emoji" placeholder="Ej: 📋" maxlength="4" value="📋">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tipo</label>
+          <select class="form-control" id="nf-tipo">
+            <option value="noticia">📰 Noticia</option>
+            <option value="comunicado">📢 Comunicado</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">¿Destacado?</label>
+          <select class="form-control" id="nf-destacado">
+            <option value="false">No</option>
+            <option value="true">Sí — tamaño grande</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('modalNoticia')">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarNoticia()">💾 Publicar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL PERSONAL DESTACADO ══ -->
+<div class="modal-overlay" id="modalStaff">
+  <div class="modal-box sm">
+    <div class="modal-head">
+      <h3 id="modalStaffTitle">Agregar Personal Destacado</h3>
+      <button class="modal-close-btn" onclick="closeModal('modalStaff')">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- Preview foto -->
+      <div style="text-align:center;margin-bottom:1.2rem;">
+        <div class="staff-foto-preview" id="staffFotoPreview">😊</div>
+        <label style="display:inline-block;margin-top:.5rem;cursor:pointer;">
+          <input type="file" id="staffFotoInput" accept="image/*" style="display:none" onchange="previewStaffFoto(this)">
+          <span class="btn btn-secondary btn-sm" style="cursor:pointer;">📷 Subir foto</span>
+        </label>
+        <div style="font-size:.65rem;color:var(--gray-400);margin-top:.3rem;font-family:'Montserrat',sans-serif;">JPG, PNG o WEBP · Máx. 2MB</div>
+      </div>
+      <div class="form-grid" style="grid-template-columns:1fr;">
+        <div class="form-group"><label class="form-label">Nombre completo <span class="req">*</span></label><input class="form-control" id="sf2-nombre" placeholder="Ej: Juan García"></div>
+        <div class="form-group"><label class="form-label">Cargo / Rol</label><input class="form-control" id="sf2-cargo" placeholder="Ej: Agente de Seguridad"></div>
+        <div class="form-group"><label class="form-label">Sector / Empresa</label><input class="form-control" id="sf2-sector" placeholder="Ej: Emcala S.R.L. · Sector Norte"></div>
+        <div class="form-group"><label class="form-label">Distinción</label>
+          <select class="form-control" id="sf2-medalla">
+            <option value="🥇">🥇 Oro — Empleado del mes</option>
+            <option value="🥈">🥈 Plata</option>
+            <option value="🥉">🥉 Bronce</option>
+            <option value="⭐">⭐ Destacado</option>
+            <option value="🏆">🏆 Premio especial</option>
+            <option value="">Sin distinción</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('modalStaff')">Cancelar</button>
+      <button class="btn btn-primary" onclick="guardarStaff()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOPBAR ══ -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-icon">🦺</div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-brand">
+      <strong>Seguridad e Higiene</strong>
+      <span>Portal SHE — RRHH</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span id="sync-status" style="font-size:.68rem;color:var(--gray-400);font-family:'Montserrat',sans-serif;"></span>
+    <button class="topbar-sync admin-only" id="btnSync" onclick="syncAll()">☁ Sincronizar</button>
+  </div>
+</div>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <a class="nav-link active" id="navInicio" onclick="showPage('inicio',this)">🏠 Inicio</a>
+  <a class="nav-link admin-only" id="navPersonal" onclick="showPage('personal',this)">👷 Personal</a>
+  <a class="nav-link admin-only" id="navART" onclick="showPage('art',this)">🩺 Siniestros ART</a>
+  <a class="nav-link admin-only" id="navAnalisis" onclick="showPage('analisis',this)">📊 Análisis</a>
+  <div class="nav-spacer"></div>
+  <div class="nav-user" id="navUser"></div>
+  <div class="nav-status" style="margin-left:.8rem"><div class="ndot"></div> Sistema activo</div>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     PAGE: INICIO
+══════════════════════════════════════════ -->
+
+<!-- ══════════════════════════════════════════
+     PAGE: INICIO
+══════════════════════════════════════════ -->
+<div class="page active" id="pageInicio">
+
+  <!-- BANNER -->
+  <div class="banner">
+    <div class="banner-left">
+      <div class="banner-eyebrow"><div class="bdot"></div>Sistema activo — Todos los servicios operativos</div>
+      <h1 class="banner-title">Gestión de<br><span>Seguridad e Higiene</span></h1>
+      <p class="banner-desc">Plataforma integral de gestión de Seguridad e Higiene Laboral. Noticias, comunicados y seguimiento de indicadores.</p>
+      <div class="banner-stats">
+        <div class="bstat"><div class="bstat-val" id="hb-personal">—</div><div class="bstat-lbl">Agentes activos</div></div>
+        <div class="bstat"><div class="bstat-val" id="hb-dias">—</div><div class="bstat-lbl">Días sin accidentes</div></div>
+        <div class="bstat"><div class="bstat-val">100%</div><div class="bstat-lbl">Cumplimiento normativa</div></div>
+      </div>
+    </div>
+    <div class="banner-right">🦺</div>
+  </div>
+
+  <div class="content">
+
+    <!-- NOTICIAS INTERNAS -->
+    <div class="sec-hdr">
+      <div class="sec-ico">📰</div>
+      <div class="sec-title">Noticias Internas</div>
+      <div class="sec-line"></div>
+      <div class="sec-badge" id="noticias-badge">Actualidad</div>
+      <button class="btn btn-primary btn-sm admin-only" onclick="abrirNuevaNoticia()" style="white-space:nowrap;margin-left:.6rem;">+ Nueva Noticia</button>
+    </div>
+    <div id="noticias-grid" class="news-grid">
+      <div style="grid-column:1/-1"><div class="tbl-loading"><div class="spinner"></div><br>Cargando noticias...</div></div>
+    </div>
+
+    <!-- LOGROS DESTACADOS -->
+    <div class="sec-hdr">
+      <div class="sec-ico">🏆</div>
+      <div class="sec-title">Logros Destacados</div>
+      <div class="sec-line"></div>
+      <div class="sec-badge">2026</div>
+    </div>
+    <div class="achieve-grid">
+      <div class="achieve-card">
+        <div class="achieve-icon">🦺</div>
+        <div class="achieve-val" id="logro-dias">—</div>
+        <div class="achieve-lbl">Días sin accidentes</div>
+      </div>
+      <div class="achieve-card">
+        <div class="achieve-icon">👷</div>
+        <div class="achieve-val" id="logro-personal">—</div>
+        <div class="achieve-lbl">Personal activo</div>
+      </div>
+      <div class="achieve-card">
+        <div class="achieve-icon">📋</div>
+        <div class="achieve-val" id="logro-siniestros">—</div>
+        <div class="achieve-lbl">Siniestros registrados</div>
+      </div>
+      <div class="achieve-card">
+        <div class="achieve-icon">✅</div>
+        <div class="achieve-val">100%</div>
+        <div class="achieve-lbl">Cumplimiento normativa</div>
+      </div>
+    </div>
+
+    <!-- PERSONAL DESTACADO -->
+    <div class="sec-hdr">
+      <div class="sec-ico">⭐</div>
+      <div class="sec-title">Personal Destacado del Mes</div>
+      <div class="sec-line"></div>
+      <div class="sec-badge" id="staff-badge">Marzo 2026</div>
+    </div>
+    <div class="staff-grid" id="staff-grid">
+      <div style="grid-column:1/-1"><div class="tbl-loading"><div class="spinner"></div><br>Cargando...</div></div>
+    </div>
+
+    <!-- COMUNICADOS -->
+    <div class="sec-hdr">
+      <div class="sec-ico">📢</div>
+      <div class="sec-title">Comunicados Importantes</div>
+      <div class="sec-line"></div>
+      <div class="sec-badge" id="comunicados-badge">Avisos</div>
+      <button class="btn btn-primary btn-sm admin-only" onclick="abrirNuevoComunicado()" style="white-space:nowrap;margin-left:.6rem;">+ Nuevo Comunicado</button>
+    </div>
+    <div id="comunicados-list">
+      <div class="tbl-loading" style="padding:2rem;"><div class="spinner"></div><br>Cargando comunicados...</div>
+    </div>
+
+    <!-- DÍAS SIN ACCIDENTES — admin edit -->
+    <div class="admin-only" style="margin-top:1rem;margin-bottom:2rem;">
+      <div class="sec-hdr">
+        <div class="sec-ico">🛡️</div>
+        <div class="sec-title">Actualizar contador de días sin accidentes</div>
+        <div class="sec-line"></div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:1.2rem 1.5rem;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+        <div>
+          <div style="font-size:.67rem;font-family:'Montserrat',sans-serif;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:1px;margin-bottom:.35rem;">Fecha del último accidente</div>
+          <input type="date" id="dias-input" class="form-control" style="min-width:200px;">
+        </div>
+        <button class="btn btn-success" onclick="actualizarDias()" style="align-self:flex-end;">💾 Guardar contador</button>
+        <div style="font-size:.75rem;color:var(--gray-400);">El contador se calcula automáticamente desde esta fecha.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     PAGE: PERSONAL
+══════════════════════════════════════════ -->
+<div class="page" id="pagePersonal">
+  <div class="banner">
+    <div class="banner-left">
+      <div class="banner-eyebrow"><div class="bdot"></div>Módulo activo</div>
+      <h1 class="banner-title">Gestión de <span>Personal</span></h1>
+      <p class="banner-desc">Nómina completa de empleados. Alta, edición y baja sincronizada con Google Sheets.</p>
+      <div class="banner-stats">
+        <div class="bstat"><div class="bstat-val" id="b-total">—</div><div class="bstat-lbl">Total empleados</div></div>
+        <div class="bstat"><div class="bstat-val" id="b-activos">—</div><div class="bstat-lbl">Activos</div></div>
+        <div class="bstat"><div class="bstat-val" id="b-empresas">—</div><div class="bstat-lbl">Empresas</div></div>
+      </div>
+    </div>
+    <div class="banner-right">👷</div>
+  </div>
+
+  <div class="content">
+    <!-- KPIs -->
+    <div class="kpi-grid" id="nom-kpis">
+      <div class="kpi-card kpi-blue"><div class="kpi-top"><div class="kpi-label">Total Empleados</div><div class="kpi-icon">👥</div></div><div class="kpi-val" id="kpi-total">—</div><div class="kpi-sub">En nómina</div></div>
+      <div class="kpi-card kpi-green"><div class="kpi-top"><div class="kpi-label">Activos</div><div class="kpi-icon">✅</div></div><div class="kpi-val" id="kpi-activos">—</div><div class="kpi-sub">Estado activo</div></div>
+      <div class="kpi-card kpi-orange"><div class="kpi-top"><div class="kpi-label">Inactivos</div><div class="kpi-icon">⛔</div></div><div class="kpi-val" id="kpi-inactivos">—</div><div class="kpi-sub">Desvinculados</div></div>
+      <div class="kpi-card kpi-red"><div class="kpi-top"><div class="kpi-label">Razones Sociales</div><div class="kpi-icon">🏢</div></div><div class="kpi-val" id="kpi-rsociales">—</div><div class="kpi-sub">Empresas activas</div></div>
+    </div>
+
+    <div class="sec-hdr">
+      <div class="sec-ico">👷</div>
+      <div class="sec-title">Nómina de Empleados</div>
+      <div class="sec-line"></div>
+      <div class="sec-badge" id="nom-badge">Cargando...</div>
+    </div>
+
+    <div class="personnel-toolbar">
+      <div class="search-wrap">
+        <span class="search-ico">🔍</span>
+        <input type="text" class="search-input" id="nom-search" placeholder="Buscar por nombre, DNI, legajo, empresa..." oninput="filtrarNomina()">
+      </div>
+      <select class="filter-select" id="nom-f-estado" onchange="filtrarNomina()">
+        <option value="">Todos los estados</option>
+        <option value="activo">Activo</option>
+        <option value="inactivo">Inactivo</option>
+      </select>
+      <select class="filter-select" id="nom-f-rsocial" onchange="filtrarNomina()">
+        <option value="">Todas las empresas</option>
+      </select>
+      <button class="btn btn-primary" onclick="abrirNuevoEmpleado()">+ Nuevo Empleado</button>
+    </div>
+
+    <div class="results-info" id="nom-count"></div>
+
+    <div class="admin-table-wrap">
+      <div id="nom-alert"></div>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Legajo</th>
+            <th>Apellidos y Nombres</th>
+            <th>DNI</th>
+            <th>R. Social</th>
+            <th>CUIL</th>
+            <th>Sexo</th>
+            <th>Localidad</th>
+            <th>F. Inicio</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="nom-tbody">
+          <tr><td colspan="10"><div class="tbl-loading"><div class="spinner"></div><br>Cargando nómina desde Google Sheets...</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: SINIESTROS ART
+══════════════════════════════════════════ -->
+<div class="page" id="pageART">
+  <div class="banner">
+    <div class="banner-left">
+      <div class="banner-eyebrow"><div class="bdot"></div>Módulo activo</div>
+      <h1 class="banner-title">Historial de <span>Siniestros ART</span></h1>
+      <p class="banner-desc">Registro completo de siniestros laborales. Alta, edición y baja sincronizada con Google Sheets.</p>
+      <div class="banner-stats">
+        <div class="bstat"><div class="bstat-val" id="ba-total">—</div><div class="bstat-lbl">Total siniestros</div></div>
+        <div class="bstat"><div class="bstat-val" id="ba-abiertos">—</div><div class="bstat-lbl">Sin alta</div></div>
+        <div class="bstat"><div class="bstat-val" id="ba-dias">—</div><div class="bstat-lbl">Días de baja</div></div>
+      </div>
+    </div>
+    <div class="banner-right">🩺</div>
+  </div>
+
+  <div class="content">
+    <!-- KPIs -->
+    <div class="kpi-grid" id="art-kpis">
+      <div class="kpi-card kpi-blue"><div class="kpi-top"><div class="kpi-label">Total Siniestros</div><div class="kpi-icon">📋</div></div><div class="kpi-val" id="akpi-total">—</div><div class="kpi-sub">Registros totales</div></div>
+      <div class="kpi-card kpi-red"><div class="kpi-top"><div class="kpi-label">Sin Alta</div><div class="kpi-icon">⚠️</div></div><div class="kpi-val" id="akpi-abiertos">—</div><div class="kpi-sub">En tratamiento</div></div>
+      <div class="kpi-card kpi-green"><div class="kpi-top"><div class="kpi-label">Con Alta</div><div class="kpi-icon">✅</div></div><div class="kpi-val" id="akpi-cerrados">—</div><div class="kpi-sub">Alta médica</div></div>
+      <div class="kpi-card kpi-orange"><div class="kpi-top"><div class="kpi-label">Días de Baja</div><div class="kpi-icon">📅</div></div><div class="kpi-val" id="akpi-dias">—</div><div class="kpi-sub">Total acumulado</div></div>
+    </div>
+
+    <div class="sec-hdr">
+      <div class="sec-ico">🩺</div>
+      <div class="sec-title">Registro de Siniestros</div>
+      <div class="sec-line"></div>
+      <div class="sec-badge" id="art-badge">Cargando...</div>
+    </div>
+
+    <div class="personnel-toolbar">
+      <div class="search-wrap">
+        <span class="search-ico">🔍</span>
+        <input type="text" class="search-input" id="art-search" placeholder="Buscar por nombre, DNI, tipo..." oninput="filtrarSiniestros()">
+      </div>
+      <select class="filter-select" id="art-f-tipo" onchange="filtrarSiniestros()">
+        <option value="">Todos los tipos</option>
+        <option>Accidente de Trabajo</option>
+        <option>Accidente In Itinere</option>
+        <option>Enfermedad Profesional</option>
+        <option>Otro</option>
+      </select>
+      <select class="filter-select" id="art-f-estado" onchange="filtrarSiniestros()">
+        <option value="">Todos</option>
+        <option value="abierto">Sin Alta</option>
+        <option value="cerrado">Con Alta</option>
+      </select>
+      <button class="btn btn-primary" onclick="abrirNuevoSiniestro()">+ Nuevo Siniestro</button>
+    </div>
+
+    <div class="results-info" id="art-count"></div>
+
+    <div class="admin-table-wrap">
+      <div id="art-alert"></div>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Nº</th>
+            <th>Apellido y Nombre</th>
+            <th>DNI</th>
+            <th>Tipo</th>
+            <th>Medio Informante</th>
+            <th>F. Accidente</th>
+            <th>F. Alta</th>
+            <th>Días Baja</th>
+            <th>Reintegro</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="art-tbody">
+          <tr><td colspan="11"><div class="tbl-loading"><div class="spinner"></div><br>Cargando siniestros desde Google Sheets...</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>Portal SHE — Seguridad e Higiene Laboral</span>
+  <strong>Datos sincronizados con Google Sheets</strong>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// URLS ENCRIPTADAS EN BASE64
+// ══════════════════════════════════════════════════════════════
+const _E = {
+  a: "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J3UEM3dktWUmhTeUhmZ09OdlE0SjY1aGp6N3VyQmVHYWh6UmJLTi1vMVlhMms5VjA2ZURjU24zeVh5dXlCT0VkdlMvZXhlYw==",
+  n: "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J5azRqbGZkVzJ5azEzeTg3ZnpOc2dZQURlM00zUk5DWWwxb0xJeG1kZG9JQjhtbDRBeUV1cEZudjEwNld3QW9JM1hHQS9leGVj"
+};
+function _d(s){return decodeURIComponent(atob(s).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));}
+const ART_URL    = _d(_E.a);
+const NOMINA_URL = _d(_E.n);
+// ══════════════════════════════════════════════════════════════
+
+let nominaData    = [];
+let siniestrosData = [];
+let editandoDNI   = null;
+let editandoN     = null;
+let verDNI        = null;
+
+// ── NAVEGACIÓN — ver función showPage más abajo (con control de permisos) ──
+
+// ── SYNC ALL ──
+async function syncAll() {
+  document.getElementById('sync-status').textContent = 'Sincronizando...';
+  await Promise.all([fetchNomina(), fetchSiniestros()]);
+  actualizarBannerHome();
+  document.getElementById('sync-status').textContent = 'Actualizado: ' + new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+}
+
+// ── URL BUILDER ──
+function buildURL(base, params) {
+  return base + '?' + Object.entries(params)
+    .map(([k,v]) => encodeURIComponent(k)+'='+encodeURIComponent(v??''))
+    .join('&');
+}
+
+// ══════════════════════════════════════════════════════════════
+// MÓDULO NÓMINA
+// ══════════════════════════════════════════════════════════════
+async function fetchNomina() {
+  try {
+    const res  = await fetch(NOMINA_URL + '?action=getNomina');
+    const json = await res.json();
+    if (json.success) {
+      nominaData = json.data || [];
+      renderNomina(nominaData);
+      actualizarKpisNomina(nominaData);
+      poblarFiltroRsocial(nominaData);
+    } else {
+      toast('Error nómina: ' + (json.error||''), true);
+    }
+  } catch(e) {
+    toast('Error de conexión con Nómina', true);
+    document.getElementById('nom-tbody').innerHTML = `<tr><td colspan="10"><div class="tbl-loading">⚠ Error de conexión</div></td></tr>`;
+  }
+}
+
+function actualizarKpisNomina(data) {
+  const activos   = data.filter(e => String(e['Estado']||'').toLowerCase()==='activo').length;
+  const inactivos = data.length - activos;
+  const rsociales = new Set(data.map(e=>e['R.Social']).filter(Boolean)).size;
+  document.getElementById('kpi-total').textContent    = data.length;
+  document.getElementById('kpi-activos').textContent  = activos;
+  document.getElementById('kpi-inactivos').textContent= inactivos;
+  document.getElementById('kpi-rsociales').textContent= rsociales;
+  document.getElementById('b-total').textContent      = data.length;
+  document.getElementById('b-activos').textContent    = activos;
+  document.getElementById('b-empresas').textContent   = rsociales;
+}
+
+function poblarFiltroRsocial(data) {
+  const empresas = [...new Set(data.map(e=>e['R.Social']).filter(Boolean))];
+  const sel = document.getElementById('nom-f-rsocial');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Todas las empresas</option>' + empresas.map(e=>`<option ${e===cur?'selected':''}>${e}</option>`).join('');
+}
+
+function renderNomina(data) {
+  const tbody = document.getElementById('nom-tbody');
+  document.getElementById('nom-count').textContent = data.length + ' empleados encontrados';
+  document.getElementById('nom-badge').textContent = data.length + ' registros';
+  if (!data.length) {
+    tbody.innerHTML = `<tr><td colspan="10"><div class="tbl-loading">Sin registros.</div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map(e => {
+    const activo = String(e['Estado']||'').toLowerCase()==='activo';
+    const pill   = activo
+      ? `<span class="pill pill-green"><span class="sdot dot-g"></span>Activo</span>`
+      : `<span class="pill pill-gray"><span class="sdot dot-r"></span>Inactivo</span>`;
+    const sexo   = e['Sexo'] === 'M' ? `<span class="pill pill-blue">M</span>`
+                 : e['Sexo'] === 'F' ? `<span class="pill pill-orange">F</span>`
+                 : (e['Sexo']||'—');
+    return `<tr>
+      <td style="font-weight:700;color:var(--blue-dark)">${e['Leg.']||'—'}</td>
+      <td style="font-weight:600;color:var(--gray-900)">${e['Apellidos']||''} ${e['Nombres']||''}</td>
+      <td style="color:var(--gray-500);font-size:.75rem">${e['DNI']||'—'}</td>
+      <td style="font-size:.75rem">${e['R.Social']||'—'}</td>
+      <td style="color:var(--gray-500);font-size:.74rem">${e['CUIL (ID Laboral)']||'—'}</td>
+      <td>${sexo}</td>
+      <td style="font-size:.76rem">${e['Localidad']||'—'}</td>
+      <td style="font-size:.75rem">${e['F. Inicio']||'—'}</td>
+      <td>${pill}</td>
+      <td><div class="actions-cell">
+        <button class="btn btn-secondary btn-sm" onclick="verEmpleado('${e['DNI']}')">Ver</button>
+        <button class="btn btn-secondary btn-sm" onclick="abrirEditarEmpleado('${e['DNI']}')">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="confirmarEliminarEmpleado('${e['DNI']}','${(e['Apellidos']||'')+' '+(e['Nombres']||'')}')">✕</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function filtrarNomina() {
+  const q    = document.getElementById('nom-search').value.toLowerCase();
+  const est  = document.getElementById('nom-f-estado').value.toLowerCase();
+  const rsoc = document.getElementById('nom-f-rsocial').value;
+  renderNomina(nominaData.filter(e => {
+    const mq = !q || [e['Apellidos'],e['Nombres'],e['DNI'],e['Leg.'],e['CUIL (ID Laboral)'],e['R.Social']].some(v=>String(v||'').toLowerCase().includes(q));
+    const me = !est || String(e['Estado']||'').toLowerCase().includes(est);
+    const mr = !rsoc || e['R.Social']===rsoc;
+    return mq && me && mr;
+  }));
+}
+
+// ── VER EMPLEADO ──
+function verEmpleado(dni) {
+  const e = nominaData.find(x=>String(x['DNI'])===String(dni));
+  if (!e) return;
+  verDNI = dni;
+  document.getElementById('ve-nombre').textContent = (e['Apellidos']||'') + ', ' + (e['Nombres']||'');
+  document.getElementById('ve-leg').textContent    = 'Legajo: ' + (e['Leg.']||'—') + ' · DNI: ' + (e['DNI']||'—');
+  document.getElementById('ve-body').innerHTML = `
+    <div class="info-sec"><div class="info-sec-head">Datos Personales</div>
+      ${ir('DNI',e['DNI'])} ${ir('CUIL',e['CUIL (ID Laboral)'])} ${ir('Sexo',e['Sexo'])} ${ir('Nacionalidad',e['Nacionalidad'])} ${ir('F. Nacimiento',e['F. Nacimiento'])} ${ir('Edad',e['Edad'])}
+    </div>
+    <div class="info-sec"><div class="info-sec-head">Laboral</div>
+      ${ir('Legajo',e['Leg.'])} ${ir('Razón Social',e['R.Social'])} ${ir('F. Inicio',e['F. Inicio'])} ${ir('Estado',e['Estado'])} ${e['F. Desvinculacion']?ir('F. Desvinculación',e['F. Desvinculacion']):''}
+    </div>
+    <div class="info-sec"><div class="info-sec-head">Contacto</div>
+      ${ir('Teléfono',e['Telefono'])} ${ir('E-mail',e['E-mail'])}
+    </div>
+    <div class="info-sec"><div class="info-sec-head">Domicilio</div>
+      ${ir('Localidad',e['Localidad'])} ${ir('Cód. Postal',e['Cod.Postal'])} ${ir('Dirección',(e['Direccion']||'')+(e['Num.']?' '+e['Num.']:'')+(e['Piso']?' P'+e['Piso']:'')+(e['Depart.']?' D'+e['Depart.']:''))}
+    </div>`;
+  openModal('modalVerEmpleado');
+}
+function ir(k,v){return `<div class="info-row"><span class="info-k">${k}</span><span class="info-v">${v||'—'}</span></div>`;}
+function editarDesdeVer(){closeModal('modalVerEmpleado');if(verDNI)abrirEditarEmpleado(verDNI);}
+
+// ── MODAL EMPLEADO ──
+function abrirNuevoEmpleado() {
+  editandoDNI = null;
+  document.getElementById('modalEmpleadoTitle').textContent = 'Nuevo Empleado';
+  document.getElementById('ef-dni').disabled = false;
+  limpiarFormEmpleado();
+  // Activar primera tab
+  document.querySelectorAll('#modalEmpleado .admin-tab').forEach((t,i)=>t.classList.toggle('active',i===0));
+  document.querySelectorAll('#modalEmpleado .admin-tab-content').forEach((t,i)=>t.classList.toggle('active',i===0));
+  openModal('modalEmpleado');
+}
+
+function abrirEditarEmpleado(dni) {
+  const e = nominaData.find(x=>String(x['DNI'])===String(dni));
+  if (!e) return;
+  editandoDNI = dni;
+  document.getElementById('modalEmpleadoTitle').textContent = 'Editar — ' + (e['Apellidos']||'') + ', ' + (e['Nombres']||'');
+  document.getElementById('ef-dni').disabled = true;
+  document.getElementById('ef-apellidos').value = e['Apellidos']||'';
+  document.getElementById('ef-nombres').value   = e['Nombres']||'';
+  document.getElementById('ef-dni').value       = e['DNI']||'';
+  document.getElementById('ef-cuil').value      = e['CUIL (ID Laboral)']||'';
+  document.getElementById('ef-fnac').value      = parseFecha(e['F. Nacimiento']);
+  document.getElementById('ef-sexo').value      = e['Sexo']||'';
+  document.getElementById('ef-nac').value       = e['Nacionalidad']||'';
+  document.getElementById('ef-leg').value       = e['Leg.']||'';
+  document.getElementById('ef-rsocial').value   = e['R.Social']||'';
+  document.getElementById('ef-finicio').value   = parseFecha(e['F. Inicio']);
+  document.getElementById('ef-estado').value    = e['Estado']||'Activo';
+  document.getElementById('ef-fdesv').value     = parseFecha(e['F. Desvinculacion']);
+  document.getElementById('ef-tel').value       = e['Telefono']||'';
+  document.getElementById('ef-email').value     = e['E-mail']||'';
+  document.getElementById('ef-loc').value       = e['Localidad']||'';
+  document.getElementById('ef-cp').value        = e['Cod.Postal']||'';
+  document.getElementById('ef-dir').value       = e['Direccion']||'';
+  document.getElementById('ef-num').value       = e['Num.']||'';
+  document.getElementById('ef-piso').value      = (e['Piso']||'') + (e['Depart.']?' — '+e['Depart.']:'');
+  document.querySelectorAll('#modalEmpleado .admin-tab').forEach((t,i)=>t.classList.toggle('active',i===0));
+  document.querySelectorAll('#modalEmpleado .admin-tab-content').forEach((t,i)=>t.classList.toggle('active',i===0));
+  openModal('modalEmpleado');
+}
+
+function limpiarFormEmpleado() {
+  ['ef-apellidos','ef-nombres','ef-dni','ef-cuil','ef-fnac','ef-nac','ef-leg','ef-rsocial','ef-finicio','ef-fdesv','ef-tel','ef-email','ef-loc','ef-cp','ef-dir','ef-num','ef-piso'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ef-sexo').value='';
+  document.getElementById('ef-estado').value='Activo';
+}
+
+async function guardarEmpleado() {
+  const dni      = document.getElementById('ef-dni').value.trim();
+  const apellidos= document.getElementById('ef-apellidos').value.trim();
+  const nombres  = document.getElementById('ef-nombres').value.trim();
+  if (!dni||!apellidos||!nombres){toast('DNI, Apellidos y Nombres son obligatorios',true);return;}
+  const pisoDpto = document.getElementById('ef-piso').value.split('—');
+  const params = {
+    action:               editandoDNI?'updateEmpleado':'saveEmpleado',
+    dni:                  editandoDNI||dni,
+    'DNI':                dni,
+    'Apellidos':          apellidos,
+    'Nombres':            nombres,
+    'CUIL (ID Laboral)':  document.getElementById('ef-cuil').value,
+    'Leg.':               document.getElementById('ef-leg').value,
+    'R.Social':           document.getElementById('ef-rsocial').value,
+    'Sexo':               document.getElementById('ef-sexo').value,
+    'Nacionalidad':       document.getElementById('ef-nac').value,
+    'F. Nacimiento':      formatFecha(document.getElementById('ef-fnac').value),
+    'F. Inicio':          formatFecha(document.getElementById('ef-finicio').value),
+    'F. Desvinculacion':  formatFecha(document.getElementById('ef-fdesv').value),
+    'Estado':             document.getElementById('ef-estado').value,
+    'Telefono':           document.getElementById('ef-tel').value,
+    'E-mail':             document.getElementById('ef-email').value,
+    'Localidad':          document.getElementById('ef-loc').value,
+    'Cod.Postal':         document.getElementById('ef-cp').value,
+    'Direccion':          document.getElementById('ef-dir').value,
+    'Num.':               document.getElementById('ef-num').value,
+    'Piso':               (pisoDpto[0]||'').trim(),
+    'Depart.':            (pisoDpto[1]||'').trim(),
+  };
+  try {
+    const res  = await fetch(buildURL(NOMINA_URL, params));
+    const json = await res.json();
+    if (json.success) {
+      toast(json.message||'Empleado guardado ✓');
+      closeModal('modalEmpleado');
+      await fetchNomina();
+    } else { toast(json.error||'Error al guardar', true); }
+  } catch(e){ toast('Error de conexión', true); }
+}
+
+function confirmarEliminarEmpleado(dni, nombre) {
+  document.getElementById('confirmTitle').textContent = 'Eliminar Empleado';
+  document.getElementById('confirmMsg').textContent   = `¿Eliminar a ${nombre}? Esta acción no se puede deshacer.`;
+  document.getElementById('confirmOkBtn').onclick = () => { closeModal('confirmModal'); eliminarEmpleado(dni); };
+  openModal('confirmModal');
+}
+
+async function eliminarEmpleado(dni) {
+  try {
+    const res  = await fetch(buildURL(NOMINA_URL,{action:'deleteEmpleado',dni}));
+    const json = await res.json();
+    if (json.success){ toast('Empleado eliminado'); await fetchNomina(); }
+    else toast(json.error||'Error al eliminar', true);
+  } catch(e){ toast('Error de conexión', true); }
+}
+
+// ══════════════════════════════════════════════════════════════
+// MÓDULO SINIESTROS ART
+// ══════════════════════════════════════════════════════════════
+async function fetchSiniestros() {
+  try {
+    const res  = await fetch(ART_URL + '?action=getSiniestros');
+    const json = await res.json();
+    if (json.success) {
+      siniestrosData = json.data || [];
+      renderSiniestros(siniestrosData);
+      actualizarKpisART(siniestrosData);
+    } else { toast('Error ART: '+(json.error||''), true); }
+  } catch(e) {
+    toast('Error de conexión con ART', true);
+    document.getElementById('art-tbody').innerHTML = `<tr><td colspan="11"><div class="tbl-loading">⚠ Error de conexión</div></td></tr>`;
+  }
+}
+
+function actualizarKpisART(data) {
+  const cerrados = data.filter(s=>s['Fecha Alta']&&s['Fecha Alta']!=='').length;
+  const abiertos = data.length - cerrados;
+  const dias     = data.reduce((a,s)=>a+(parseInt(s['Días de Baja'])||0),0);
+  document.getElementById('akpi-total').textContent   = data.length;
+  document.getElementById('akpi-abiertos').textContent= abiertos;
+  document.getElementById('akpi-cerrados').textContent= cerrados;
+  document.getElementById('akpi-dias').textContent    = dias;
+  document.getElementById('ba-total').textContent     = data.length;
+  document.getElementById('ba-abiertos').textContent  = abiertos;
+  document.getElementById('ba-dias').textContent      = dias;
+}
+
+function renderSiniestros(data) {
+  const tbody = document.getElementById('art-tbody');
+  document.getElementById('art-count').textContent = data.length + ' siniestros encontrados';
+  document.getElementById('art-badge').textContent = data.length + ' registros';
+  if (!data.length) {
+    tbody.innerHTML = `<tr><td colspan="11"><div class="tbl-loading">Sin registros.</div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map(s => {
+    const tienAlta = s['Fecha Alta'] && s['Fecha Alta']!=='';
+    const estado   = tienAlta
+      ? `<span class="pill pill-green"><span class="sdot dot-g"></span>Con Alta</span>`
+      : `<span class="pill pill-orange"><span class="sdot dot-o"></span>Sin Alta</span>`;
+    const tipo = s['Tipo']||'—';
+    const tipoPill = tipo.includes('Trabajo') ? 'pill-orange'
+      : tipo.includes('Itinere') ? 'pill-blue'
+      : tipo.includes('Enfermedad') ? 'pill-red' : 'pill-gray';
+    const reintegro = s['Reintegro ART']==='Sí' ? `<span class="pill pill-green">Sí</span>`
+      : s['Reintegro ART']==='No' ? `<span class="pill pill-red">No</span>`
+      : `<span class="pill pill-gray">${s['Reintegro ART']||'—'}</span>`;
+    return `<tr>
+      <td style="font-weight:700;color:var(--blue-dark)">${s['Siniestro Nº']||'—'}</td>
+      <td style="font-weight:600;color:var(--gray-900)">${s['Apellido y Nombre']||'—'}</td>
+      <td style="color:var(--gray-500);font-size:.75rem">${s['DNI']||'—'}</td>
+      <td><span class="pill ${tipoPill}">${tipo}</span></td>
+      <td style="font-size:.75rem">${s['Medio Informante']||'—'}</td>
+      <td style="font-size:.75rem">${s['Fecha Accidente']||'—'}</td>
+      <td style="font-size:.75rem">${s['Fecha Alta']||'—'}</td>
+      <td style="text-align:center;font-weight:700">${s['Días de Baja']||'0'}</td>
+      <td>${reintegro}</td>
+      <td>${estado}</td>
+      <td><div class="actions-cell">
+        <button class="btn btn-secondary btn-sm" onclick="abrirEditarSiniestro(${s['Siniestro Nº']})">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="confirmarEliminarSiniestro(${s['Siniestro Nº']})">✕</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function filtrarSiniestros() {
+  const q    = document.getElementById('art-search').value.toLowerCase();
+  const tipo = document.getElementById('art-f-tipo').value;
+  const est  = document.getElementById('art-f-estado').value;
+  renderSiniestros(siniestrosData.filter(s => {
+    const mq = !q || [s['Apellido y Nombre'],s['DNI'],s['Tipo'],s['Descripción']].some(v=>String(v||'').toLowerCase().includes(q));
+    const mt = !tipo || s['Tipo']===tipo;
+    const me = !est
+      || (est==='cerrado' && s['Fecha Alta'])
+      || (est==='abierto' && !s['Fecha Alta']);
+    return mq && mt && me;
+  }));
+}
+
+// ── MODAL SINIESTRO ──
+function abrirNuevoSiniestro() {
+  editandoN = null;
+  document.getElementById('modalSiniestroTitle').textContent = 'Nuevo Siniestro ART';
+  limpiarFormSiniestro();
+  openModal('modalSiniestro');
+}
+
+function abrirEditarSiniestro(n) {
+  const s = siniestrosData.find(x=>String(x['Siniestro Nº'])===String(n));
+  if (!s) return;
+  editandoN = n;
+  document.getElementById('modalSiniestroTitle').textContent = 'Editar Siniestro #' + n;
+  document.getElementById('sf-dni').value         = s['DNI']||'';
+  document.getElementById('sf-nombre').value      = s['Apellido y Nombre']||'';
+  document.getElementById('sf-tipo').value        = s['Tipo']||'';
+  document.getElementById('sf-medio').value       = s['Medio Informante']||'';
+  document.getElementById('sf-fecha-acc').value   = parseFecha(s['Fecha Accidente']);
+  document.getElementById('sf-fecha-con').value   = parseFecha(s['Fecha Conocimiento']);
+  document.getElementById('sf-fecha-alta').value  = parseFecha(s['Fecha Alta']);
+  document.getElementById('sf-dias').value        = s['Días de Baja']||'0';
+  document.getElementById('sf-reintegro').value   = s['Reintegro ART']||'';
+  document.getElementById('sf-descripcion').value = s['Descripción']||'';
+  openModal('modalSiniestro');
+}
+
+function limpiarFormSiniestro() {
+  ['sf-dni','sf-nombre','sf-medio','sf-fecha-acc','sf-fecha-con','sf-fecha-alta','sf-descripcion'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('sf-tipo').value='';
+  document.getElementById('sf-reintegro').value='';
+  document.getElementById('sf-dias').value='0';
+}
+
+async function guardarSiniestro() {
+  const dni    = document.getElementById('sf-dni').value.trim();
+  const nombre = document.getElementById('sf-nombre').value.trim();
+  if (!dni||!nombre){toast('DNI y Nombre son obligatorios',true);return;}
+  const params = {
+    action:              editandoN?'updateSiniestro':'saveSiniestro',
+    num:                 editandoN||'',
+    'DNI':               dni,
+    'Apellido y Nombre': nombre,
+    'Tipo':              document.getElementById('sf-tipo').value,
+    'Medio Informante':  document.getElementById('sf-medio').value,
+    'Fecha Accidente':   formatFecha(document.getElementById('sf-fecha-acc').value),
+    'Fecha Conocimiento':formatFecha(document.getElementById('sf-fecha-con').value),
+    'Fecha Alta':        formatFecha(document.getElementById('sf-fecha-alta').value),
+    'Días de Baja':      document.getElementById('sf-dias').value,
+    'Reintegro ART':     document.getElementById('sf-reintegro').value,
+    'Descripción':       document.getElementById('sf-descripcion').value,
+  };
+  try {
+    const res  = await fetch(buildURL(ART_URL, params));
+    const json = await res.json();
+    if (json.success){ toast(json.message||'Siniestro guardado ✓'); closeModal('modalSiniestro'); await fetchSiniestros(); }
+    else toast(json.error||'Error al guardar', true);
+  } catch(e){ toast('Error de conexión', true); }
+}
+
+function confirmarEliminarSiniestro(n) {
+  document.getElementById('confirmTitle').textContent = 'Eliminar Siniestro';
+  document.getElementById('confirmMsg').textContent   = `¿Eliminar el siniestro #${n}? Esta acción no se puede deshacer.`;
+  document.getElementById('confirmOkBtn').onclick = () => { closeModal('confirmModal'); eliminarSiniestro(n); };
+  openModal('confirmModal');
+}
+
+async function eliminarSiniestro(n) {
+  try {
+    const res  = await fetch(buildURL(ART_URL,{action:'deleteSiniestro',num:n}));
+    const json = await res.json();
+    if (json.success){ toast('Siniestro #'+n+' eliminado'); await fetchSiniestros(); }
+    else toast(json.error||'Error al eliminar', true);
+  } catch(e){ toast('Error de conexión', true); }
+}
+
+// ══════════════════════════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════════════════════════
+function parseFecha(f) {
+  if (!f) return '';
+  if (f.includes('/')) { const [d,m,y]=f.split('/'); return y&&m&&d?`${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`:''; }
+  return f;
+}
+function formatFecha(f) {
+  if (!f) return '';
+  if (f.includes('-')) { const [y,m,d]=f.split('-'); return `${d}/${m}/${y}`; }
+  return f;
+}
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+function switchTab(el, targetId) {
+  const parent = el.closest('.modal-body')||el.closest('.admin-content');
+  el.parentElement.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const allContent = document.getElementById(targetId).parentElement.querySelectorAll('.admin-tab-content');
+  allContent.forEach(c=>c.classList.remove('active'));
+  document.getElementById(targetId).classList.add('active');
+}
+function toast(msg, err) {
+  const c = document.getElementById('toastWrap');
+  const t = document.createElement('div');
+  t.className = 'toast' + (err?' err':'');
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(()=>t.remove(), 3500);
+}
+
+
+// ══════════════════════════════════════════════════════════════
+// AUTH & ROLES
+// ══════════════════════════════════════════════════════════════
+const ADMIN_USER = 'seguridademcala';
+const ADMIN_PASS = 'Surcalaseguridad';
+let currentRole  = null; // null | 'visitante' | 'admin'
+
+function loginVisitante() {
+  currentRole = 'visitante';
+  applyRole();
+  document.getElementById('loginOverlay').classList.add('hidden');
+  showPage('inicio', document.getElementById('navInicio'));
+}
+
+function loginAdmin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const err = document.getElementById('loginError');
+  if (u === ADMIN_USER && p === ADMIN_PASS) {
+    currentRole = 'admin';
+    err.style.display = 'none';
+    applyRole();
+    document.getElementById('loginOverlay').classList.add('hidden');
+    showPage('inicio', document.getElementById('navInicio'));
+    syncAll();
+  } else {
+    err.style.display = 'block';
+    document.getElementById('loginPass').value = '';
+  }
+}
+
+function logout() {
+  currentRole = null;
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginError').style.display = 'none';
+  document.getElementById('loginOverlay').classList.remove('hidden');
+  applyRole();
+}
+
+function applyRole() {
+  const isAdmin = currentRole === 'admin';
+  // mostrar/ocultar elementos admin-only
+  document.querySelectorAll('.admin-only').forEach(el => {
+    const isNavLink = el.classList.contains('nav-link');
+    const isBtn     = el.tagName === 'BUTTON';
+    el.style.display = isAdmin
+      ? (isNavLink ? 'flex' : (isBtn ? 'inline-flex' : ''))
+      : 'none';
+  });
+  // nav user info
+  const navUser = document.getElementById('navUser');
+  if (currentRole === 'admin') {
+    navUser.innerHTML = `
+      <span class="nav-role-badge nrb-admin">ADMIN</span>
+      <span style="color:rgba(255,255,255,.65);font-size:.7rem;font-family:'Montserrat',sans-serif;">seguridademcala</span>
+      <button class="nav-logout-btn" onclick="logout()">Salir</button>`;
+  } else if (currentRole === 'visitante') {
+    navUser.innerHTML = `
+      <span class="nav-role-badge nrb-visitante">VISITANTE</span>
+      <button class="nav-logout-btn" onclick="logout()">Cambiar acceso</button>`;
+  } else {
+    navUser.innerHTML = '';
+  }
+  // cards de días sin accidentes: mostrar input solo a admin
+  renderDiasAdmin();
+  // re-renderizar staff para mostrar/ocultar botones admin
+  if (document.getElementById('staff-grid')) renderStaff();
+}
+
+// ── NAVEGACIÓN (override para respetar permisos) ──
+function showPage(page, el) {
+  if ((page === 'personal' || page === 'art' || page === 'analisis') && currentRole !== 'admin') {
+    toast('Acceso restringido — Iniciá sesión como administrador', true);
+    return;
+  }
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+  const pageId = 'page' + page.charAt(0).toUpperCase() + page.slice(1);
+  document.getElementById(pageId).classList.add('active');
+  if (el) el.classList.add('active');
+  if (page === 'analisis') renderAnalisis();
+}
+
+// ══════════════════════════════════════════════════════════════
+// NOTICIAS & COMUNICADOS (almacenados en localStorage)
+// ══════════════════════════════════════════════════════════════
+let noticias = [];
+let editandoNoticia = null;
+
+function cargarNoticias() {
+  try {
+    const saved = localStorage.getItem('she_noticias');
+    noticias = saved ? JSON.parse(saved) : getNoticiasDefault();
+  } catch(e) {
+    noticias = getNoticiasDefault();
+  }
+  renderNoticias();
+  renderComunicados();
+}
+
+function guardarNoticiasLocal() {
+  localStorage.setItem('she_noticias', JSON.stringify(noticias));
+}
+
+function getNoticiasDefault() {
+  const hoy = new Date().toLocaleDateString('es-AR', {day:'2-digit', month:'long', year:'numeric'});
+  return [
+    { id: 1, titulo: 'Bienvenidos al Portal SHE', desc: 'El portal de Seguridad e Higiene ya está disponible. Aquí encontrarán noticias, comunicados y novedades del área.', cat: 'nb-blue', emoji: '🦺', tipo: 'noticia', destacado: true, fecha: hoy },
+    { id: 2, titulo: 'Recordatorio: uso obligatorio de EPP', desc: 'Se recuerda al personal el uso obligatorio de elementos de protección personal en todas las áreas operativas.', cat: 'nb-orange', emoji: '⚠️', tipo: 'comunicado', destacado: false, fecha: hoy },
+    { id: 3, titulo: 'Meta: 183 días sin accidentes', desc: 'Felicitamos a todo el equipo por alcanzar este importante logro en materia de seguridad laboral.', cat: 'nb-green', emoji: '🏆', tipo: 'noticia', destacado: false, fecha: hoy },
+  ];
+}
+
+function renderNoticias() {
+  const grid  = document.getElementById('noticias-grid');
+  const items = noticias.filter(n => n.tipo === 'noticia');
+  document.getElementById('noticias-badge').textContent = items.length + ' noticias';
+  if (!items.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--gray-400);font-family:'Montserrat',sans-serif;">No hay noticias publicadas.</div>`;
+    return;
+  }
+  const destacada = items.find(n => n.destacado) || items[0];
+  const resto     = items.filter(n => n !== destacada);
+  const adminBtns = (n) => currentRole==='admin'
+    ? `<div class="news-actions">
+        <button class="btn btn-secondary btn-sm" onclick="editarNoticia(${n.id})">✏️ Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="eliminarNoticia(${n.id})">✕</button>
+       </div>` : '';
+  let html = `
+    <div class="news-card featured">
+      <div class="news-img">
+        <span>${destacada.emoji||'📋'}</span>
+        <span class="nbadge ${destacada.cat}">${catLabel(destacada.cat)}</span>
+      </div>
+      <div class="news-body">
+        <div class="news-date">${destacada.fecha}</div>
+        <div class="news-title">${destacada.titulo}</div>
+        <div class="news-desc">${destacada.desc||''}</div>
+      </div>
+      ${adminBtns(destacada)}
+    </div>`;
+  resto.slice(0,4).forEach(n => {
+    html += `
+    <div class="news-card">
+      <div class="news-img">
+        <span>${n.emoji||'📋'}</span>
+        <span class="nbadge ${n.cat}">${catLabel(n.cat)}</span>
+      </div>
+      <div class="news-body">
+        <div class="news-date">${n.fecha}</div>
+        <div class="news-title">${n.titulo}</div>
+        <div class="news-desc">${n.desc||''}</div>
+      </div>
+      ${adminBtns(n)}
+    </div>`;
+  });
+  grid.innerHTML = html;
+}
+
+function renderComunicados() {
+  const lista = document.getElementById('comunicados-list');
+  const items = noticias.filter(n => n.tipo === 'comunicado');
+  const badge = document.getElementById('comunicados-badge');
+  if(badge) badge.textContent = items.length + ' avisos';
+  if (!items.length) {
+    lista.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--gray-400);font-size:.8rem;font-family:'Montserrat',sans-serif;">No hay comunicados publicados.</div>`;
+    return;
+  }
+  const iconMap = { 'nb-red':'com-urgente', 'nb-blue':'com-info', 'nb-green':'com-logro', 'nb-orange':'com-aviso', 'nb-gray':'com-info' };
+  lista.innerHTML = items.map(c => `
+    <div class="comunicado-item">
+      <div class="com-icon ${iconMap[c.cat]||'com-info'}">${c.emoji||'📢'}</div>
+      <div class="com-body">
+        <div class="com-title">${c.titulo}</div>
+        ${c.desc?`<div class="com-desc">${c.desc}</div>`:''}
+        <div class="com-date">${c.fecha}</div>
+      </div>
+      ${currentRole==='admin'?`<div class="com-actions">
+        <button class="btn btn-secondary btn-sm" onclick="editarNoticia(${c.id})">✏️</button>
+        <button class="btn btn-danger btn-sm" onclick="eliminarNoticia(${c.id})">✕</button>
+      </div>`:''}
+    </div>`).join('');
+}
+
+function catLabel(cat) {
+  const m = {'nb-red':'Urgente','nb-blue':'Info','nb-green':'Logro','nb-orange':'Aviso','nb-gray':'General'};
+  return m[cat]||'Info';
+}
+
+function abrirNuevaNoticia() {
+  editandoNoticia = null;
+  document.getElementById('modalNoticiaTitle').textContent = 'Nueva Noticia';
+  document.getElementById('nf-tipo').value = 'noticia';
+  limpiarFormNoticia();
+  openModal('modalNoticia');
+}
+function abrirNuevoComunicado() {
+  editandoNoticia = null;
+  document.getElementById('modalNoticiaTitle').textContent = 'Nuevo Comunicado';
+  document.getElementById('nf-tipo').value = 'comunicado';
+  limpiarFormNoticia();
+  openModal('modalNoticia');
+}
+function limpiarFormNoticia() {
+  document.getElementById('nf-titulo').value = '';
+  document.getElementById('nf-desc').value = '';
+  document.getElementById('nf-cat').value = 'nb-blue';
+  document.getElementById('nf-emoji').value = '📋';
+  document.getElementById('nf-destacado').value = 'false';
+}
+function editarNoticia(id) {
+  const n = noticias.find(x => x.id === id);
+  if (!n) return;
+  editandoNoticia = id;
+  document.getElementById('modalNoticiaTitle').textContent = 'Editar — ' + n.titulo.substring(0,30);
+  document.getElementById('nf-titulo').value     = n.titulo;
+  document.getElementById('nf-desc').value       = n.desc||'';
+  document.getElementById('nf-cat').value        = n.cat;
+  document.getElementById('nf-emoji').value      = n.emoji;
+  document.getElementById('nf-tipo').value       = n.tipo;
+  document.getElementById('nf-destacado').value  = String(n.destacado);
+  openModal('modalNoticia');
+}
+function guardarNoticia() {
+  const titulo = document.getElementById('nf-titulo').value.trim();
+  if (!titulo) { toast('El título es obligatorio', true); return; }
+  const hoy = new Date().toLocaleDateString('es-AR', {day:'2-digit', month:'long', year:'numeric'});
+  if (editandoNoticia) {
+    const idx = noticias.findIndex(n => n.id === editandoNoticia);
+    if (idx >= 0) {
+      noticias[idx] = { ...noticias[idx],
+        titulo, desc: document.getElementById('nf-desc').value,
+        cat: document.getElementById('nf-cat').value,
+        emoji: document.getElementById('nf-emoji').value || '📋',
+        tipo: document.getElementById('nf-tipo').value,
+        destacado: document.getElementById('nf-destacado').value === 'true',
+      };
+    }
+    toast('Publicación actualizada ✓');
+  } else {
+    noticias.unshift({
+      id: Date.now(),
+      titulo, desc: document.getElementById('nf-desc').value,
+      cat: document.getElementById('nf-cat').value,
+      emoji: document.getElementById('nf-emoji').value || '📋',
+      tipo: document.getElementById('nf-tipo').value,
+      destacado: document.getElementById('nf-destacado').value === 'true',
+      fecha: hoy,
+    });
+    toast('Publicado ✓');
+  }
+  guardarNoticiasLocal();
+  closeModal('modalNoticia');
+  renderNoticias();
+  renderComunicados();
+}
+function eliminarNoticia(id) {
+  const n = noticias.find(x => x.id === id);
+  if (!n) return;
+  document.getElementById('confirmTitle').textContent = 'Eliminar publicación';
+  document.getElementById('confirmMsg').textContent   = `¿Eliminar "${n.titulo}"?`;
+  document.getElementById('confirmOkBtn').onclick = () => {
+    noticias = noticias.filter(x => x.id !== id);
+    guardarNoticiasLocal();
+    closeModal('confirmModal');
+    renderNoticias();
+    renderComunicados();
+    toast('Eliminado');
+  };
+  openModal('confirmModal');
+}
+
+// ══════════════════════════════════════════════════════════════
+// DÍAS SIN ACCIDENTES
+// ══════════════════════════════════════════════════════════════
+function cargarDias() {
+  const saved = localStorage.getItem('she_ultimo_accidente');
+  const fecha = saved ? new Date(saved) : null;
+  if (saved) document.getElementById('dias-input').value = saved;
+  renderDias(fecha);
+}
+function renderDias(fecha) {
+  let dias = '—';
+  if (fecha) {
+    const hoy  = new Date(); hoy.setHours(0,0,0,0);
+    const diff = Math.floor((hoy - fecha) / (1000*60*60*24));
+    dias = diff >= 0 ? diff : '—';
+  }
+  document.getElementById('hb-dias').textContent  = dias;
+  const ld = document.getElementById('logro-dias');
+  if (ld) ld.textContent = dias;
+}
+function actualizarDias() {
+  const val = document.getElementById('dias-input').value;
+  if (!val) { toast('Seleccioná una fecha', true); return; }
+  localStorage.setItem('she_ultimo_accidente', val);
+  renderDias(new Date(val));
+  toast('Contador actualizado ✓');
+}
+function renderDiasAdmin() {
+  // el input se muestra/oculta por .admin-only aplicado al div padre
+}
+
+// ══════════════════════════════════════════════════════════════
+// BANNER HOME con datos de nómina y siniestros
+// ══════════════════════════════════════════════════════════════
+function actualizarBannerHome() {
+  const activos = nominaData.filter(e=>String(e['Estado']||'').toLowerCase()==='activo').length;
+  const total   = siniestrosData.length;
+  if (nominaData.length) {
+    document.getElementById('hb-personal').textContent   = activos;
+    document.getElementById('logro-personal').textContent = activos;
+  }
+  if (siniestrosData.length) {
+    document.getElementById('logro-siniestros').textContent = total;
+  }
+  // días sin accidentes en logros
+  const diasEl = document.getElementById('logro-dias');
+  if (diasEl) diasEl.textContent = document.getElementById('hb-dias').textContent;
+}
+
+// ══════════════════════════════════════════════════════════════
+// PERSONAL DESTACADO
+// ══════════════════════════════════════════════════════════════
+let staffData = [];
+let editandoStaff = null;
+
+function cargarStaff() {
+  try {
+    const saved = localStorage.getItem('she_staff');
+    staffData = saved ? JSON.parse(saved) : [];
+  } catch(e) { staffData = []; }
+  renderStaff();
+}
+
+function guardarStaffLocal() {
+  localStorage.setItem('she_staff', JSON.stringify(staffData));
+}
+
+function renderStaff() {
+  const grid  = document.getElementById('staff-grid');
+  const badge = document.getElementById('staff-badge');
+  const mes   = new Date().toLocaleDateString('es-AR', {month:'long', year:'numeric'});
+  if (badge) badge.textContent = mes.charAt(0).toUpperCase() + mes.slice(1);
+
+  let html = '';
+
+  staffData.forEach(p => {
+    const foto = p.foto
+      ? `<img src="${p.foto}" alt="${p.nombre}">`
+      : `<span style="font-size:1.9rem">👤</span>`;
+    const adminBtns = currentRole === 'admin'
+      ? `<div class="staff-actions">
+           <button class="btn btn-secondary btn-sm" onclick="editarStaff(${p.id})" title="Editar">✏️</button>
+           <button class="btn btn-danger btn-sm" onclick="eliminarStaff(${p.id})" title="Eliminar">✕</button>
+         </div>` : '';
+    html += `
+      <div class="staff-card">
+        ${p.medalla ? `<div class="staff-medal">${p.medalla}</div>` : ''}
+        <div class="staff-avatar">${foto}</div>
+        <div class="staff-name">${p.nombre}</div>
+        <div class="staff-role">${p.cargo||''}</div>
+        <div class="staff-dept">${p.sector||''}</div>
+        ${adminBtns}
+      </div>`;
+  });
+
+  // Botón agregar — solo admin
+  if (currentRole === 'admin') {
+    html += `
+      <div class="staff-add-card" onclick="abrirNuevoStaff()">
+        <div class="staff-add-icon">＋</div>
+        <div class="staff-add-lbl">Agregar destacado</div>
+      </div>`;
+  }
+
+  if (!html) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:2.5rem;color:var(--gray-400);font-family:'Montserrat',sans-serif;font-size:.82rem;">No hay personal destacado este mes.</div>`;
+    return;
+  }
+  grid.innerHTML = html;
+}
+
+function abrirNuevoStaff() {
+  editandoStaff = null;
+  document.getElementById('modalStaffTitle').textContent = 'Agregar Personal Destacado';
+  document.getElementById('sf2-nombre').value  = '';
+  document.getElementById('sf2-cargo').value   = '';
+  document.getElementById('sf2-sector').value  = '';
+  document.getElementById('sf2-medalla').value = '🥇';
+  document.getElementById('staffFotoPreview').innerHTML = '<span style="font-size:2.2rem">😊</span>';
+  document.getElementById('staffFotoInput').value = '';
+  openModal('modalStaff');
+}
+
+function editarStaff(id) {
+  const p = staffData.find(x => x.id === id);
+  if (!p) return;
+  editandoStaff = id;
+  document.getElementById('modalStaffTitle').textContent = 'Editar — ' + p.nombre;
+  document.getElementById('sf2-nombre').value  = p.nombre;
+  document.getElementById('sf2-cargo').value   = p.cargo  || '';
+  document.getElementById('sf2-sector').value  = p.sector || '';
+  document.getElementById('sf2-medalla').value = p.medalla|| '';
+  const prev = document.getElementById('staffFotoPreview');
+  prev.innerHTML = p.foto
+    ? `<img src="${p.foto}" alt="${p.nombre}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`
+    : '<span style="font-size:2.2rem">😊</span>';
+  document.getElementById('staffFotoInput').value = '';
+  openModal('modalStaff');
+}
+
+function previewStaffFoto(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) { toast('La imagen no puede superar 2MB', true); input.value=''; return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const prev = document.getElementById('staffFotoPreview');
+    prev.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+    prev.dataset.b64 = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function guardarStaff() {
+  const nombre = document.getElementById('sf2-nombre').value.trim();
+  if (!nombre) { toast('El nombre es obligatorio', true); return; }
+  const prev = document.getElementById('staffFotoPreview');
+  const fotoNueva = prev.dataset.b64 || null;
+
+  if (editandoStaff) {
+    const idx = staffData.findIndex(x => x.id === editandoStaff);
+    if (idx >= 0) {
+      staffData[idx] = {
+        ...staffData[idx],
+        nombre,
+        cargo:   document.getElementById('sf2-cargo').value.trim(),
+        sector:  document.getElementById('sf2-sector').value.trim(),
+        medalla: document.getElementById('sf2-medalla').value,
+        foto:    fotoNueva || staffData[idx].foto || null,
+      };
+    }
+    toast('Perfil actualizado ✓');
+  } else {
+    staffData.push({
+      id:      Date.now(),
+      nombre,
+      cargo:   document.getElementById('sf2-cargo').value.trim(),
+      sector:  document.getElementById('sf2-sector').value.trim(),
+      medalla: document.getElementById('sf2-medalla').value,
+      foto:    fotoNueva || null,
+    });
+    toast('Personal destacado agregado ✓');
+  }
+  guardarStaffLocal();
+  closeModal('modalStaff');
+  delete prev.dataset.b64;
+  renderStaff();
+}
+
+function eliminarStaff(id) {
+  const p = staffData.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('confirmTitle').textContent = 'Eliminar destacado';
+  document.getElementById('confirmMsg').textContent   = `¿Eliminar a ${p.nombre} de los destacados?`;
+  document.getElementById('confirmOkBtn').onclick = () => {
+    staffData = staffData.filter(x => x.id !== id);
+    guardarStaffLocal();
+    closeModal('confirmModal');
+    renderStaff();
+    toast('Eliminado');
+  };
+  openModal('confirmModal');
+}
+
+// ── INIT ──
+cargarNoticias();
+cargarDias();
+cargarStaff();
+// Login se muestra automáticamente, no cargar datos hasta que alguien ingrese
+
+// ══════════════════════════════════════════════════════════════
+// ANÁLISIS
+// ══════════════════════════════════════════════════════════════
+let periodoMeses  = 1;
+let chartMensual  = null;
+let chartTipo     = null;
+let chartEmpresa  = null;
+let chartEstado   = null;
+
+function setPeriodo(meses, btn) {
+  periodoMeses = meses;
+  document.querySelectorAll('.periodo-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAnalisis();
+}
+
+// Parsear fecha dd/mm/yyyy o yyyy-mm-dd → Date
+function parseDate(str) {
+  if (!str) return null;
+  str = str.trim();
+  if (str.includes('/')) {
+    const [d, m, y] = str.split('/');
+    return new Date(+y, +m - 1, +d);
+  }
+  if (str.includes('-')) {
+    const [y, m, d] = str.split('-');
+    return new Date(+y, +m - 1, +d);
+  }
+  return null;
+}
+
+function renderAnalisis() {
+  const hoy    = new Date();
+  const desde  = new Date(hoy.getFullYear(), hoy.getMonth() - (periodoMeses - 1), 1);
+  const hasta  = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0);
+
+  // Label período
+  const fmtMes = d => d.toLocaleDateString('es-AR', { month: 'short', year: '2-digit' });
+  document.getElementById('analisis-periodo-label').textContent =
+    periodoMeses === 1
+      ? hoy.toLocaleDateString('es-AR', { month: 'long', year: 'numeric' })
+      : fmtMes(desde) + ' — ' + fmtMes(hasta);
+
+  // Filtrar siniestros en el período por Fecha Accidente
+  const enPeriodo = siniestrosData.filter(s => {
+    const f = parseDate(s['Fecha Accidente']);
+    return f && f >= desde && f <= hasta;
+  });
+
+  // KPIs
+  const inactivos = enPeriodo.filter(s => !s['Fecha Alta'] || s['Fecha Alta'] === '');
+  const conAlta   = enPeriodo.filter(s => s['Fecha Alta'] && s['Fecha Alta'] !== '');
+  const diasTotal = enPeriodo.reduce((a, s) => a + (parseInt(s['Días de Baja']) || 0), 0);
+
+  document.getElementById('an-total').textContent    = enPeriodo.length;
+  document.getElementById('an-inactivos').textContent = inactivos.length;
+  document.getElementById('an-altas').textContent    = conAlta.length;
+  document.getElementById('an-dias').textContent     = diasTotal;
+  document.getElementById('an-inactivos-badge').textContent = inactivos.length + ' personas';
+
+  // ── GRÁFICO 1: Mensual (barras) ──
+  const meses = [];
+  for (let i = periodoMeses - 1; i >= 0; i--) {
+    const d = new Date(hoy.getFullYear(), hoy.getMonth() - i, 1);
+    meses.push({ label: d.toLocaleDateString('es-AR', { month: 'short', year: '2-digit' }), year: d.getFullYear(), month: d.getMonth() });
+  }
+  const countMes = meses.map(m =>
+    siniestrosData.filter(s => {
+      const f = parseDate(s['Fecha Accidente']);
+      return f && f.getFullYear() === m.year && f.getMonth() === m.month;
+    }).length
+  );
+  const countMesInact = meses.map(m =>
+    siniestrosData.filter(s => {
+      const f = parseDate(s['Fecha Accidente']);
+      return f && f.getFullYear() === m.year && f.getMonth() === m.month && (!s['Fecha Alta'] || s['Fecha Alta'] === '');
+    }).length
+  );
+
+  if (chartMensual) chartMensual.destroy();
+  chartMensual = new Chart(document.getElementById('chartMensual'), {
+    type: 'bar',
+    data: {
+      labels: meses.map(m => m.label),
+      datasets: [
+        { label: 'Total casos', data: countMes, backgroundColor: 'rgba(26,79,160,.75)', borderRadius: 5 },
+        { label: 'Sin alta', data: countMesInact, backgroundColor: 'rgba(220,38,38,.65)', borderRadius: 5 },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'top', labels: { font: { family: 'Montserrat', size: 11 } } } },
+      scales: {
+        y: { beginAtZero: true, ticks: { stepSize: 1, font: { family: 'Montserrat', size: 10 } } },
+        x: { ticks: { font: { family: 'Montserrat', size: 11 } } }
+      }
+    }
+  });
+
+  // ── GRÁFICO 2: Por tipo (dona) ──
+  const tipos = {};
+  enPeriodo.forEach(s => { const t = s['Tipo'] || 'Sin tipo'; tipos[t] = (tipos[t] || 0) + 1; });
+  const tipoLabels = Object.keys(tipos);
+  const tipoVals   = Object.values(tipos);
+  const coloresTipo = ['rgba(26,79,160,.8)','rgba(220,38,38,.8)','rgba(215,119,6,.8)','rgba(22,163,74,.8)','rgba(124,58,237,.8)'];
+
+  if (chartTipo) chartTipo.destroy();
+  chartTipo = new Chart(document.getElementById('chartTipo'), {
+    type: 'doughnut',
+    data: {
+      labels: tipoLabels,
+      datasets: [{ data: tipoVals, backgroundColor: coloresTipo.slice(0, tipoLabels.length), borderWidth: 2 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { family: 'Montserrat', size: 10 }, boxWidth: 12 } }
+      }
+    }
+  });
+
+  // ── GRÁFICO 3: Por empresa — cruzar DNI con nómina ──
+  const empresasMap = {};
+  enPeriodo.forEach(s => {
+    const emp = nominaData.find(e => String(e['DNI']) === String(s['DNI']));
+    const rsoc = emp ? (emp['R.Social'] || 'Sin empresa') : 'Sin empresa';
+    empresasMap[rsoc] = (empresasMap[rsoc] || 0) + 1;
+  });
+  const empLabels = Object.keys(empresasMap);
+  const empVals   = Object.values(empresasMap);
+  const coloresEmp = ['rgba(26,79,160,.8)','rgba(245,166,35,.85)','rgba(22,163,74,.8)','rgba(220,38,38,.8)','rgba(124,58,237,.8)'];
+
+  if (chartEmpresa) chartEmpresa.destroy();
+  chartEmpresa = new Chart(document.getElementById('chartEmpresa'), {
+    type: 'bar',
+    data: {
+      labels: empLabels,
+      datasets: [{
+        label: 'Siniestros',
+        data: empVals,
+        backgroundColor: empLabels.map((_, i) => coloresEmp[i % coloresEmp.length]),
+        borderRadius: 5
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { beginAtZero: true, ticks: { stepSize: 1, font: { family: 'Montserrat', size: 10 } } },
+        y: { ticks: { font: { family: 'Montserrat', size: 11 } } }
+      }
+    }
+  });
+
+  // ── GRÁFICO 4: Estado (dona pequeña) ──
+  if (chartEstado) chartEstado.destroy();
+  chartEstado = new Chart(document.getElementById('chartEstado'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Con alta', 'Sin alta (inactivo)'],
+      datasets: [{
+        data: [conAlta.length, inactivos.length],
+        backgroundColor: ['rgba(22,163,74,.8)', 'rgba(220,38,38,.8)'],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { family: 'Montserrat', size: 11 }, boxWidth: 12 } }
+      }
+    }
+  });
+
+  // ── TABLA: Inactivos por ART ──
+  const tbody = document.getElementById('an-inactivos-tbody');
+  if (!inactivos.length) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--gray-400);font-family:'Montserrat',sans-serif;">No hay personas sin alta en este período. ✅</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = inactivos.map(s => {
+    const emp  = nominaData.find(e => String(e['DNI']) === String(s['DNI']));
+    const rsoc = emp ? (emp['R.Social'] || '—') : '—';
+    const tipo = s['Tipo'] || '—';
+    const tipoPill = tipo.includes('Trabajo') ? 'pill-orange'
+      : tipo.includes('Itinere') ? 'pill-blue'
+      : tipo.includes('Enfermedad') ? 'pill-red' : 'pill-gray';
+    const reint = s['Reintegro ART'] === 'Sí'
+      ? '<span class="pill pill-green">Sí</span>'
+      : s['Reintegro ART'] === 'No'
+      ? '<span class="pill pill-red">No</span>'
+      : `<span class="pill pill-gray">${s['Reintegro ART'] || '—'}</span>`;
+    return `<tr>
+      <td style="font-weight:600;color:var(--gray-900)">${s['Apellido y Nombre'] || '—'}</td>
+      <td style="color:var(--gray-500);font-size:.75rem">${s['DNI'] || '—'}</td>
+      <td style="font-size:.75rem">${rsoc}</td>
+      <td><span class="pill ${tipoPill}">${tipo}</span></td>
+      <td style="font-size:.75rem">${s['Fecha Accidente'] || '—'}</td>
+      <td style="text-align:center;font-weight:700;color:var(--red)">${s['Días de Baja'] || '0'}</td>
+      <td>${reint}</td>
+    </tr>`;
+  }).join('');
+}
+
+
+
+</script>
+
+<!-- ══════════════════════════════════════════
+     PAGE: ANÁLISIS
+══════════════════════════════════════════ -->
+<div class="page" id="pageAnalisis">
+
+  <div class="banner" style="min-height:160px;padding:2rem 2.5rem;">
+    <div class="banner-left">
+      <div class="banner-eyebrow"><div class="bdot"></div>Datos en tiempo real</div>
+      <h1 class="banner-title" style="font-size:1.7rem;">Análisis de <span>Siniestralidad ART</span></h1>
+      <p class="banner-desc" style="margin-bottom:0;font-size:.82rem;">Indicadores por período, empresa y tipo de siniestro.</p>
+    </div>
+    <div class="banner-right" style="font-size:3.5rem;">📊</div>
+  </div>
+
+  <div class="content">
+
+    <!-- TOOLBAR PERÍODO -->
+    <div class="analisis-toolbar">
+      <span style="font-size:.7rem;font-family:'Montserrat',sans-serif;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:1px;">Período:</span>
+      <button class="periodo-btn active" id="pbtn-1" onclick="setPeriodo(1,this)">Mes actual</button>
+      <button class="periodo-btn" id="pbtn-3" onclick="setPeriodo(3,this)">Últimos 3 meses</button>
+      <button class="periodo-btn" id="pbtn-6" onclick="setPeriodo(6,this)">Últimos 6 meses</button>
+      <div style="flex:1"></div>
+      <span id="analisis-periodo-label" style="font-size:.72rem;color:var(--gray-400);font-family:'Montserrat',sans-serif;font-weight:600;"></span>
+    </div>
+
+    <!-- KPIs -->
+    <div class="analisis-grid">
+      <div class="kpi-card kpi-blue">
+        <div class="kpi-top"><div class="kpi-label">Casos en el período</div><div class="kpi-icon">📋</div></div>
+        <div class="kpi-val" id="an-total">—</div>
+        <div class="kpi-sub" id="an-total-sub">siniestros registrados</div>
+      </div>
+      <div class="kpi-card kpi-red">
+        <div class="kpi-top"><div class="kpi-label">Inactivos por ART</div><div class="kpi-icon">⚠️</div></div>
+        <div class="kpi-val" id="an-inactivos">—</div>
+        <div class="kpi-sub">sin alta médica</div>
+      </div>
+      <div class="kpi-card kpi-green">
+        <div class="kpi-top"><div class="kpi-label">Con Alta</div><div class="kpi-icon">✅</div></div>
+        <div class="kpi-val" id="an-altas">—</div>
+        <div class="kpi-sub">alta médica otorgada</div>
+      </div>
+      <div class="kpi-card kpi-orange">
+        <div class="kpi-top"><div class="kpi-label">Días de baja</div><div class="kpi-icon">📅</div></div>
+        <div class="kpi-val" id="an-dias">—</div>
+        <div class="kpi-sub">en el período</div>
+      </div>
+    </div>
+
+    <!-- FILA 1: Evolución mensual + Por tipo -->
+    <div class="charts-row">
+      <div class="chart-card wide">
+        <div class="chart-title">Siniestros por mes</div>
+        <div class="chart-sub" id="ch1-sub">Casos registrados en el período seleccionado</div>
+        <div class="chart-wrap"><canvas id="chartMensual"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Por tipo de siniestro</div>
+        <div class="chart-sub">Distribución en el período</div>
+        <div class="chart-wrap-sm"><canvas id="chartTipo"></canvas></div>
+      </div>
+    </div>
+
+    <!-- FILA 2: Por empresa + Por estado -->
+    <div class="charts-row">
+      <div class="chart-card">
+        <div class="chart-title">Por empresa (R. Social)</div>
+        <div class="chart-sub">Casos por razón social en el período</div>
+        <div class="chart-wrap-sm"><canvas id="chartEmpresa"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Estado actual de casos</div>
+        <div class="chart-sub">Con alta vs sin alta médica</div>
+        <div class="chart-wrap-sm"><canvas id="chartEstado"></canvas></div>
+      </div>
+    </div>
+
+    <!-- DETALLE: quiénes están inactivos por ART -->
+    <div class="sec-hdr">
+      <div class="sec-ico">⚠️</div>
+      <div class="sec-title">Personas inactivas por ART en el período</div>
+      <div class="sec-line"></div>
+      <div class="sec-badge" id="an-inactivos-badge">—</div>
+    </div>
+    <div class="admin-table-wrap" style="background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:2rem;">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Apellido y Nombre</th>
+            <th>DNI</th>
+            <th>Empresa</th>
+            <th>Tipo siniestro</th>
+            <th>F. Accidente</th>
+            <th>Días de baja</th>
+            <th>Reintegro ART</th>
+          </tr>
+        </thead>
+        <tbody id="an-inactivos-tbody">
+          <tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--gray-400);">Seleccioná un período para ver los datos.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
